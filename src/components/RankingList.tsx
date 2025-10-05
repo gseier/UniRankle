@@ -9,9 +9,9 @@ import type { University } from '../types/University';
 const formatRankingVariable = (key: keyof University | 'studentCount') => {
     switch (key) {
         case 'ranking':
-            return 'Global Rank';
+            return 'Global Rank'; // Rank 1 is highest
         case 'studentCount':
-            return 'Student Count (Lowest to Highest)';
+            return 'Student Count'; // Highest number first
         default:
             return 'Unknown Metric';
     }
@@ -20,7 +20,6 @@ const formatRankingVariable = (key: keyof University | 'studentCount') => {
 // --- Main RankingList Component ---
 const RankingList: React.FC = () => {
   
-  // Use hook to get the initial list, the correct answer, and the daily ranking variable
   const { dailyUniversities, correctOrder, rankingBy } = useDailyChallenge();
   
   const [universities, setUniversities] = useState<University[]>(dailyUniversities); 
@@ -29,8 +28,11 @@ const RankingList: React.FC = () => {
   const [score, setScore] = useState<number | null>(null);
 
   // --- Native D&D Logic ---
+  // The handler is attached to the parent SortableItem, but the event only bubbles up if 
+  // the inner UniversityCard (the draggable element) initiated the drag.
   const handleDragStart = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     const id = e.currentTarget.getAttribute('data-id');
+    
     if (id) {
       e.dataTransfer.setData('text/plain', id);
       setTimeout(() => setDraggedId(id), 0); 
@@ -73,15 +75,27 @@ const RankingList: React.FC = () => {
     <div className="min-h-screen bg-gray-100 font-sans antialiased py-8">
       <div className="container mx-auto p-4 sm:p-8 max-w-4xl">
         
-        <header className="text-center mb-8">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-indigo-800 tracking-tight">
+        <header className="text-center mb-10">
+          <h1 className="
+            text-6xl sm:text-7xl font-black 
+            text-transparent bg-clip-text 
+            
+            /* Apply the large background size and the custom animation */
+            bg-400% animate-gradient-flow
+            
+            /* Enhanced Gradient Colors */
+            bg-gradient-to-r from-indigo-600 via-purple-500 to-pink-600 
+            
+            tracking-tightest leading-none"
+          >
             UniRankle
           </h1>
-          <p className="text-gray-600 mt-2 max-w-xl mx-auto text-lg">
-            Today's challenge:
-          </p>
-          <p className="text-gray-600 mt-2 max-w-xl mx-auto text-lg">
-            Rank these five universities from 1 (Highest) to 5 (Lowest) based on <b>{formatRankingVariable(rankingBy)}</b>
+          <p className="text-gray-600 mt-4 max-w-xl mx-auto text-lg border-t pt-4">
+            Today's challenge: 
+            <br />
+            Rank these five universities from 1 (Highest) to 5 (Lowest) based on 
+            <br/>
+            <b>{formatRankingVariable(rankingBy)}</b>
           </p>
         </header>
 
@@ -109,7 +123,7 @@ const RankingList: React.FC = () => {
               {universities.map((uni, index) => {
                 const correctIndex = correctOrder.findIndex(correctUni => correctUni.id === uni.id);
                 const correctRank = correctIndex !== -1 ? correctIndex + 1 : undefined;
-
+                
                 return (
                   <SortableItem 
                     key={uni.id} 
@@ -121,6 +135,8 @@ const RankingList: React.FC = () => {
                     isDragging={draggedId === uni.id}
                     isSubmitted={isSubmitted}
                     correctRank={correctRank}
+                    rankingBy={rankingBy}
+                    correctValue={uni[rankingBy]} 
                   />
                 );
               })}

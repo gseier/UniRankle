@@ -1,14 +1,37 @@
 import React from 'react';
 import type { University } from '../types/University';
+import type { RankVariable } from '../utils/dndUtils'; 
 
 interface UniversityCardProps {
   university: University;
-  isDragging?: boolean; 
+  isDragging?: boolean;
+  isSubmitted?: boolean; 
+  rankingBy?: RankVariable; 
+  correctValue?: number | string; 
 }
 
-const UniversityCard: React.FC<UniversityCardProps> = ({ university, isDragging = false }) => {
+const formatValueDisplay = (key: RankVariable, value: number | string): string => {
+    if (key === 'studentCount' && typeof value === 'number') {
+        // Format large numbers for better display on the card
+        if (value >= 1000000) return (value / 1000000).toFixed(1) + 'M';
+        if (value >= 1000) return (value / 1000).toFixed(0) + 'K';
+    }
+    return String(value);
+}
+
+const UniversityCard: React.FC<UniversityCardProps> = ({ 
+  university, 
+  isDragging = false,
+  isSubmitted = false,
+  rankingBy = 'ranking',
+  correctValue
+}) => {
   const fallbackText = university.name.split(' ').map(n => n[0]).join('').substring(0, 3).toUpperCase();
   const fallbackImageUrl = `https://placehold.co/300x120/3B82F6/FFFFFF?text=${fallbackText}`;
+
+  const variableLabel = rankingBy === 'ranking' ? 'Global Rank' : 'Student Count';
+  const displayValue = correctValue !== undefined ? formatValueDisplay(rankingBy, correctValue) : '';
+  const valueColor = rankingBy === 'ranking' ? 'text-yellow-300' : 'text-green-300';
 
   return (
     // Card Container
@@ -23,7 +46,7 @@ const UniversityCard: React.FC<UniversityCardProps> = ({ university, isDragging 
       aria-label={`University Card for ${university.name}`}
     >
       
-      {/* 1. Image Area (Top) */}
+      {/* 1. Image Area (Top) with Submission Overlay */}
       <div className="relative w-full h-32 overflow-hidden">
         <img
           src={university.imageUrl}
@@ -36,8 +59,23 @@ const UniversityCard: React.FC<UniversityCardProps> = ({ university, isDragging 
             target.className = "w-full h-full object-contain p-4 bg-gray-200"; 
           }}
         />
-        {/* Subtle Fade-out Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-50/70 to-transparent"></div>
+        {/* Submission Overlay (The Graph/Reveal) */}
+        <div 
+            className={`absolute inset-0 bg-gray-900/70 transition-opacity duration-500 flex items-center justify-center p-4
+            ${isSubmitted ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        >
+            <div className="text-center">
+                <p className="text-sm font-light uppercase tracking-wider text-gray-300">
+                    Correct {variableLabel}
+                </p>
+                <p className={`text-4xl font-extrabold ${valueColor} mt-1`}>
+                    {displayValue}
+                </p>
+            </div>
+        </div>
+        
+        {/* Subtle Fade-out Gradient Overlay (Only visible before submission) */}
+        <div className={`absolute inset-0 bg-gradient-to-t from-gray-50/70 to-transparent ${isSubmitted ? 'opacity-0' : 'opacity-100'}`}></div>
       </div>
 
       {/* 2. Text Content (Bottom) */}
@@ -49,11 +87,11 @@ const UniversityCard: React.FC<UniversityCardProps> = ({ university, isDragging 
             {university.name}
           </h3>
           <p className="text-xs sm:text-sm text-indigo-600 font-medium mt-1">
-            Students: {university.studentCount.toLocaleString()}
+            {university.country}
           </p>
         </div>
 
-        {/* Drag Handle Icon */}
+        {/* Drag Handle Icon (Visual only) */}
         <div className="flex-shrink-0 ml-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"

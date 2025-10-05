@@ -1,6 +1,7 @@
 import React from 'react';
 import UniversityCard from './UniversityCard';
 import type { University } from '../types/University';
+import type { RankVariable } from '../utils/dndUtils';
 
 interface SortableItemProps {
   university: University;
@@ -11,6 +12,8 @@ interface SortableItemProps {
   isDragging: boolean;
   isSubmitted: boolean;
   correctRank?: number;
+  rankingBy: RankVariable;
+  correctValue: number | string; // Type definition remains, but is passed to child
 }
 
 const SortableItem: React.FC<SortableItemProps> = ({ 
@@ -21,56 +24,83 @@ const SortableItem: React.FC<SortableItemProps> = ({
   onDragEnd,
   isDragging,
   isSubmitted,
-  correctRank 
+  correctRank,
+  rankingBy,
+  // Removed correctValue from destructuring to fix "unused" error
 }) => {
   
   // Dynamic styling for rank indicator
   let rankBg = 'bg-indigo-100 text-indigo-700';
-  let rankText = index + 1;
+  let rankText: string | number = index + 1;
+  let indicatorTooltip = `Your Rank: ${index + 1}`;
 
   if (isSubmitted && correctRank !== undefined) {
     if (correctRank === index + 1) {
-      rankBg = 'bg-green-500 text-white'; // Correct
+      rankBg = 'bg-green-600 text-white'; // Correct Placement
     } else if (Math.abs(correctRank - (index + 1)) <= 1) {
-      rankBg = 'bg-yellow-400 text-gray-800'; // Close
+      rankBg = 'bg-yellow-400 text-gray-800'; // Close Placement
     } else {
-      rankBg = 'bg-red-400 text-white'; // Incorrect
+      rankBg = 'bg-red-500 text-white'; // Incorrect Placement
     }
-    rankText = correctRank;
+    
+    // Display the correct RANK position on submission (for the left indicator)
+    rankText = `#${correctRank}`;
+    indicatorTooltip = `Actual Rank Position: ${correctRank}`;
   }
   
-  const dragStyle = isDragging ? 'opacity-50 border-dashed border-indigo-500' : 'border-solid border-gray-100';
+  // Drag style is now applied to the draggable section only
+  const dragStyle = isDragging ? 'opacity-80 scale-[0.99] border-dashed border-indigo-500' : 'border-solid border-gray-100';
 
   return (
     <div 
       data-id={university.id}
       data-index={index}
-      draggable={!isSubmitted} // Only draggable before submission
+      // Handlers attached to the outer element to catch the bubbling event
       onDragStart={onDragStart}
       onDragEnter={onDragEnter}
-      onDragOver={(e) => e.preventDefault()}
       onDragEnd={onDragEnd}
+      onDragOver={(e) => e.preventDefault()}
       className={`
-        flex items-center space-x-4 transition-all duration-300 transform 
-        bg-gray-50 rounded-2xl shadow-md border-2 border-transparent hover:border-indigo-300
-        ${isSubmitted ? 'cursor-default' : 'hover:shadow-lg cursor-grab'}
+        flex items-stretch space-x-4 transition-all duration-300 transform 
+        bg-gray-50 rounded-2xl shadow-md border-2 border-transparent 
+        ${isSubmitted ? 'cursor-default' : 'hover:shadow-lg'}
       `}
     >
       
-      {/* Rank Indicator */}
+      {/* 1. Rank Indicator (Not Draggable) */}
       <div 
         className={`
-          flex-shrink-0 w-14 h-14 flex items-center justify-center rounded-full 
-          font-bold text-2xl shadow-xl transition-colors duration-300 ml-3
+          flex-shrink-0 w-20 h-20 flex flex-col items-center justify-center rounded-l-2xl 
+          font-bold text-center shadow-xl transition-colors duration-300 ml-3 my-3 py-2
           ${rankBg}
         `}
+        title={indicatorTooltip}
       >
-        {rankText}
+        <span className="text-sm leading-none">
+            {isSubmitted ? 'Pos.' : 'Rank'}
+        </span>
+        <span className="text-xl sm:text-2xl leading-none pt-1">
+            {rankText}
+        </span>
       </div>
 
-      {/* The University Card */}
-      <div className={`flex-grow ${dragStyle}`}>
-        <UniversityCard university={university} isDragging={isDragging} />
+      {/* 2. University Card (The Draggable Module) */}
+      <div 
+        draggable={!isSubmitted}
+        className={`
+            flex-grow h-full py-2 pr-2 
+            ${isSubmitted ? 'cursor-default' : 'cursor-grab'} 
+            ${dragStyle} 
+            transition-all duration-150
+        `}
+      >
+        <UniversityCard 
+            university={university} 
+            isDragging={isDragging} 
+            isSubmitted={isSubmitted}
+            rankingBy={rankingBy}
+            correctValue={university[rankingBy]} 
+        />
       </div>
     </div>
   );

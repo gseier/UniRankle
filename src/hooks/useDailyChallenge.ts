@@ -8,11 +8,9 @@ const RANKING_VARIABLES: RankVariable[] = ['ranking', 'studentCount'];
 const CHALLENGE_COUNT = 5; // The required number of universities per game
 
 // --- HELPER FUNCTIONS ---
-// Function to get a random item from an array
 const getRandomElement = <T,>(arr: T[]): T => {
     return arr[Math.floor(Math.random() * arr.length)];
 };
-// Function to shuffle an array randomly
 const shuffleArray = <T,>(array: T[]): T[] => {
     const newArray = [...array];
     for (let i = newArray.length - 1; i > 0; i--) {
@@ -25,7 +23,6 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 
 /**
  * Hook to manage the state of the daily university challenge data.
- * This now selects 5 random universities and randomizes their starting order.
  */
 export const useDailyChallenge = () => {
   const allUniversities: University[] = universityData as University[];
@@ -46,8 +43,13 @@ export const useDailyChallenge = () => {
         const valB = b[rankingBy];
 
         if (typeof valA === 'number' && typeof valB === 'number') {
-            // Sort ascending (lower value is rank 1, e.g., ranking: 1)
-            return valA - valB;
+            if (rankingBy === 'studentCount') {
+                // Sort descendingly for studentCount (Highest to Lowest)
+                return valB - valA; 
+            } else {
+                // Sort ascendingly for 'ranking' (Lowest Rank number is highest position)
+                return valA - valB;
+            }
         }
         return 0;
     });
@@ -57,7 +59,7 @@ export const useDailyChallenge = () => {
 
     return { initialDisplayOrder: initialDisplay, correctOrder: correctList };
 
-  }, [allUniversities, rankingBy]); // Depend on allUniversities and rankingBy
+  }, [allUniversities, rankingBy]); 
 
   return { dailyUniversities: initialDisplayOrder, correctOrder, rankingBy };
 };

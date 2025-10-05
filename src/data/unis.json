@@ -4,6 +4,7 @@
         "name": "Harvard University",
         "ranking": 1,
         "studentCount": 22608,
+        "country": "United States",
         "imageUrl": "/images/harvard.jpg"
     },
     {
@@ -11,6 +12,7 @@
         "name": "Massachusetts Institute of Technology",
         "ranking": 2,
         "studentCount": 11549,
+        "country": "United States",
         "imageUrl": "/images/mit.jpg"
     },
     {
@@ -18,6 +20,7 @@
         "name": "Stanford University",
         "ranking": 3,
         "studentCount": 17422,
+        "country": "United States",
         "imageUrl": "/images/stanford.jpg"
     },
     {
@@ -25,6 +28,7 @@
         "name": "University of Oxford",
         "ranking": 4,
         "studentCount": 26000,
+        "country": "United Kingdom",
         "imageUrl": "/images/oxford.jpg"
     },
     {
@@ -32,6 +36,7 @@
         "name": "University of Cambridge",
         "ranking": 5,
         "studentCount": 21140,
+        "country": "United Kingdom",
         "imageUrl": "/images/cambridge.jpg"
     },
     {
@@ -39,6 +44,7 @@
         "name": "University of California Berkeley",
         "ranking": 6,
         "studentCount": 42565,
+        "country": "United States",
         "imageUrl": "/images/berkeley.jpg"
     },
     {
@@ -46,6 +52,7 @@
         "name": "University College London",
         "ranking": 7,
         "studentCount": 44910,
+        "country": "United Kingdom",
         "imageUrl": "/images/ucl.jpg"
     },
     {
@@ -53,6 +60,7 @@
         "name": "University of Washington Seattle",
         "ranking": 8,
         "studentCount": 49524,
+        "country": "United States",
         "imageUrl": "/images/washington.jpg"
     },
     {
@@ -60,6 +68,7 @@
         "name": "Yale University",
         "ranking": 9,
         "studentCount": 15600,
+        "country": "United States",
         "imageUrl": "/images/yale.jpg"
     },
     {
@@ -67,6 +76,7 @@
         "name": "Columbia University",
         "ranking": 10,
         "studentCount": 30580,
+        "country": "United States",
         "imageUrl": "/images/columbia.jpg"
     }
 ]

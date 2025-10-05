@@ -19,7 +19,13 @@ const Scoreboard: React.FC<ScoreboardProps> = ({ score, maxPossibleScore, isSubm
                             {score} / {maxPossibleScore}
                         </p>
                         <p className="text-sm text-gray-500">
-                            Great job! See the colors next to the ranks for accuracy.
+                            {score === 0 && "Are you even trying?"}
+                            {score === 1 && "Ouch! That was rough. Time to hit the books."}
+                            {score === 2 && "Not great, but at least it's not the worst."}
+                            {score === 3 && "Meh, you're halfway there. Keep trying."}
+                            {score === 4 && "Pretty good, but not perfect. Almost there!"}
+                            {score === 5 && "Outstanding! You nailed it!"}
+                            {score !== null && score > 5 && "Amazing! You've exceeded expectations!"}
                         </p>
                     </div>
                 ) : (
