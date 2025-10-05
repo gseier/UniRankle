@@ -1,0 +1,38 @@
+
+[
+    {
+        "id": "u1",
+        "name": "Harvard University",
+        "ranking": 1,
+        "studentCount": 22608,
+        "imageUrl": "/images/unis/harvard.jpg"
+    },
+    {
+        "id": "u2",
+        "name": "Massachusetts Institute of Technology",
+        "ranking": 2,
+        "studentCount": 11549,
+        "imageUrl": "/images/unis/mit.jpg"
+    },
+    {
+        "id": "u3",
+        "name": "Stanford University",
+        "ranking": 3,
+        "studentCount": 17422,
+        "imageUrl": "/images/unis/stanford.jpg"
+    },
+    {
+        "id": "u4",
+        "name": "University of Oxford",
+        "ranking": 4,
+        "studentCount": 26000,
+        "imageUrl": "/images/unis/oxford.jpg"
+    },
+    {
+        "id": "u5",
+        "name": "University of Cambridge",
+        "ranking": 5,
+        "studentCount": 21140,
+        "imageUrl": "/images/unis/cambridge.jpg"
+    }
+]
