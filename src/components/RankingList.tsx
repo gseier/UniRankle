@@ -1,116 +1,21 @@
-import React, { useState, useCallback, useMemo } from 'react';
-import UniversityCard from './UniversityCard'; // Imports the visual card component
-import type { University } from '../types/University'; // Imports the TypeScript type
-import universityData from '../data/unis.json'; // Imports the JSON data
-
-// --- Utility Functions ---
-/** Moves an item within an array using its original and new index. */
-const arrayMove = <T,>(array: T[], fromIndex: number, toIndex: number): T[] => {
-  const newArray = [...array];
-  const element = newArray[fromIndex];
-  newArray.splice(fromIndex, 1);
-  newArray.splice(toIndex, 0, element);
-  return newArray;
-};
-
-// --- Sortable Item Wrapper Component ---
-interface SortableItemProps {
-  university: University;
-  index: number;
-  onDragStart: (e: React.DragEvent<HTMLDivElement>) => void;
-  onDragEnter: (e: React.DragEvent<HTMLDivElement>) => void;
-  onDragEnd: (e: React.DragEvent<HTMLDivElement>) => void;
-  isDragging: boolean;
-  isSubmitted: boolean;
-  correctRank?: number;
-}
-
-const SortableItem: React.FC<SortableItemProps> = ({ 
-  university, 
-  index,
-  onDragStart,
-  onDragEnter,
-  onDragEnd,
-  isDragging,
-  isSubmitted,
-  correctRank 
-}) => {
-  
-  // Dynamic styling for rank indicator
-  let rankBg = 'bg-indigo-100 text-indigo-700';
-  let rankText = index + 1;
-
-  if (isSubmitted && correctRank !== undefined) {
-    if (correctRank === index + 1) {
-      rankBg = 'bg-green-500 text-white'; // Correct
-    } else if (Math.abs(correctRank - (index + 1)) <= 1) {
-      rankBg = 'bg-yellow-400 text-gray-800'; // Close
-    } else {
-      rankBg = 'bg-red-400 text-white'; // Incorrect
-    }
-    rankText = correctRank;
-  }
-  
-  const dragStyle = isDragging ? 'opacity-50 border-dashed border-indigo-500' : 'border-solid border-gray-100';
-
-  return (
-    <div 
-      data-id={university.id}
-      data-index={index}
-      draggable={!isSubmitted} // Only draggable before submission
-      onDragStart={onDragStart}
-      onDragEnter={onDragEnter}
-      onDragOver={(e) => e.preventDefault()}
-      onDragEnd={onDragEnd}
-      className={`
-        flex items-center space-x-4 transition-all duration-300 transform 
-        bg-gray-50 rounded-2xl py-2 shadow-sm
-        ${isSubmitted ? 'cursor-default' : 'hover:shadow-md cursor-grab'}
-      `}
-    >
-      
-      {/* Rank Indicator */}
-      <div 
-        className={`
-          flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full 
-          font-bold text-xl shadow-lg transition-colors duration-300 ml-2 border-2 
-          ${rankBg}
-        `}
-      >
-        {rankText}
-      </div>
-
-      {/* The University Card */}
-      <div className={`flex-grow ${dragStyle}`}>
-        <UniversityCard university={university} isDragging={isDragging} />
-      </div>
-    </div>
-  );
-};
-
+import React, { useState, useCallback } from 'react';
+import SortableItem from './SortableItem';
+import Scoreboard from './Scoreboard';
+import { useDailyChallenge } from '../hooks/useDailyChallenge';
+import { arrayMove, calculateScore, calculateMaxScore } from '../utils/dndUtils';
+import type { University } from '../types/University'; // <--- ADD THIS LINE
 
 // --- Main RankingList Component ---
 const RankingList: React.FC = () => {
-  // Use useMemo to ensure the initial set of universities is only picked once.
-  // We assume universityData is an array of University objects.
-  const allUniversities: University[] = universityData as University[];
   
-  // Logic to select 7 random universities for the daily challenge (adjust as needed)
-  const initialDailyUniversities = useMemo(() => {
-    const count = 7;
-    const shuffled = [...allUniversities].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, count);
-  }, [allUniversities]);
-
-  const [universities, setUniversities] = useState<University[]>(initialDailyUniversities);
+  // Use hook to get the initial list and the correct answer
+  const { dailyUniversities, correctOrder } = useDailyChallenge();
+  
+  // Line 13: The error is fixed by the import above.
+  const [universities, setUniversities] = useState<University[]>(dailyUniversities); 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [draggedId, setDraggedId] = useState<string | null>(null);
   const [score, setScore] = useState<number | null>(null);
-
-  // The definitively correct order, sorted by the 'ranking' property.
-  const CORRECT_ORDER = useMemo(() => {
-    return [...initialDailyUniversities].sort((a, b) => a.ranking - b.ranking);
-  }, [initialDailyUniversities]);
 
   // --- Native D&D Logic ---
   const handleDragStart = useCallback((e: React.DragEvent<HTMLDivElement>) => {
@@ -125,7 +30,8 @@ const RankingList: React.FC = () => {
     e.preventDefault();
     if (isSubmitted || !draggedId) return;
     
-    const targetId = e.currentTarget.getAttribute('data-id');
+    const targetElement = e.currentTarget;
+    const targetId = targetElement.getAttribute('data-id');
 
     if (draggedId === targetId) return;
 
@@ -142,32 +48,15 @@ const RankingList: React.FC = () => {
   }, []);
   // --- End Native D&D Logic ---
 
-  /** Calculates score based on positional accuracy. */
-  const calculateScore = (userRanks: University[]): number => {
-    let currentScore = 0;
-    
-    userRanks.forEach((userUni, userIndex) => {
-      const correctIndex = CORRECT_ORDER.findIndex(correctUni => correctUni.id === userUni.id);
-      const difference = Math.abs(userIndex - correctIndex);
-      
-      const points = userRanks.length - 1 - difference;
-      
-      if (points > 0) currentScore += points;
-    });
-
-    return currentScore;
-  };
-
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
     if (isSubmitted) return;
 
-    const finalScore = calculateScore(universities);
+    const finalScore = calculateScore(universities, correctOrder);
     setScore(finalScore);
     setIsSubmitted(true);
-  };
+  }, [universities, correctOrder, isSubmitted]);
   
-  // Calculate max score
-  const maxPossibleScore = universities.length * (universities.length - 1) / 2;
+  const maxPossibleScore = calculateMaxScore(universities.length);
 
   return (
     <div className="min-h-screen bg-gray-100 font-sans antialiased py-8">
@@ -194,7 +83,7 @@ const RankingList: React.FC = () => {
               aria-live="polite"
             >
               {universities.map((uni, index) => {
-                const correctIndex = CORRECT_ORDER.findIndex(correctUni => correctUni.id === uni.id);
+                const correctIndex = correctOrder.findIndex(correctUni => correctUni.id === uni.id);
                 const correctRank = correctIndex !== -1 ? correctIndex + 1 : undefined;
 
                 return (
@@ -216,47 +105,12 @@ const RankingList: React.FC = () => {
           
           {/* Scoreboard Column */}
           <div className="md:col-span-1">
-            <div className="sticky top-8 space-y-6">
-              
-              <div className="bg-indigo-50 p-6 rounded-2xl shadow-xl border border-indigo-200">
-                <h2 className="text-2xl font-bold text-indigo-700 mb-3">
-                  Game Status
-                </h2>
-                
-                {isSubmitted ? (
-                  <div className="text-center">
-                    <p className="text-lg text-gray-700 font-medium">Your Final Score:</p>
-                    <p className="text-6xl font-extrabold text-green-600 my-2">
-                      {score} / {maxPossibleScore}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Perfect score means your ranking perfectly matched the actual Global Rank.
-                    </p>
-                  </div>
-                ) : (
-                  <div className="text-center text-gray-700">
-                    <p className="text-lg font-semibold">Ready to test your knowledge?</p>
-                    <p className="text-sm mt-1">
-                      Drag and drop the universities until you're satisfied with your list.
-                    </p>
-                  </div>
-                )}
-              </div>
-              
-              {/* Submit Button */}
-              <button
-                onClick={handleSubmit}
-                disabled={isSubmitted}
-                className={`
-                  w-full py-4 rounded-xl text-xl font-bold transition-all duration-300 transform
-                  ${isSubmitted 
-                    ? 'bg-gray-400 cursor-not-allowed shadow-inner' 
-                    : 'bg-indigo-600 text-white shadow-2xl hover:bg-indigo-700 hover:shadow-3xl active:scale-[0.99]'}
-                `}
-              >
-                {isSubmitted ? 'Challenge Complete!' : 'Submit My Ranking'}
-              </button>
-            </div>
+            <Scoreboard
+                score={score}
+                maxPossibleScore={maxPossibleScore}
+                isSubmitted={isSubmitted}
+                onSubmit={handleSubmit}
+            />
           </div>
         </main>
       </div>
