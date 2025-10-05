@@ -12,35 +12,29 @@ export const arrayMove = <T,>(array: T[], fromIndex: number, toIndex: number): T
 };
 
 /**
- * Calculates a score based on how close the user's ranking is to the correct order.
- * @param userRanks The user's ranked list.
- * @param correctOrder The definitive correct list.
- * @returns The total score achieved.
+ * Calculates a score based on how many universities the user placed in the EXACT correct position.
+ * The max score is equal to the number of universities (e.g., 5).
  */
 export const calculateScore = (userRanks: University[], correctOrder: University[]): number => {
-    let currentScore = 0;
+    let correctCount = 0;
     
     userRanks.forEach((userUni, userIndex) => {
-      // Find the correct index of this university in the CORRECT_ORDER list
-      const correctIndex = correctOrder.findIndex(correctUni => correctUni.id === userUni.id);
-      
-      // Calculate the difference in position
-      const difference = Math.abs(userIndex - correctIndex);
-      
-      // Score calculation: max possible points (N-1) minus the difference
-      // N = userRanks.length
-      const points = userRanks.length - 1 - difference;
-      
-      if (points > 0) currentScore += points;
+      // Check if the university at the user's index (userUni) is the same as 
+      // the university in the correct list at that same index.
+      if (userUni.id === correctOrder[userIndex].id) {
+        correctCount += 1;
+      }
     });
 
-    return currentScore;
+    return correctCount;
 };
 
 /**
- * Calculates the maximum possible score for a list of N items.
+ * Calculates the maximum possible score (which is simply the count of items).
  */
 export const calculateMaxScore = (N: number): number => {
-  // Max score formula: N * (N - 1) / 2
-  return N * (N - 1) / 2;
+  // Max score is the number of items placed correctly.
+  return N;
 }
+
+export type RankVariable = keyof University | 'studentCount';

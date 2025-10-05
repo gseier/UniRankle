@@ -3,15 +3,26 @@ import SortableItem from './SortableItem';
 import Scoreboard from './Scoreboard';
 import { useDailyChallenge } from '../hooks/useDailyChallenge';
 import { arrayMove, calculateScore, calculateMaxScore } from '../utils/dndUtils';
-import type { University } from '../types/University'; // <--- ADD THIS LINE
+import type { University } from '../types/University';
+
+// Helper function to format the ranking variable for display
+const formatRankingVariable = (key: keyof University | 'studentCount') => {
+    switch (key) {
+        case 'ranking':
+            return 'Global Rank';
+        case 'studentCount':
+            return 'Student Count (Lowest to Highest)';
+        default:
+            return 'Unknown Metric';
+    }
+}
 
 // --- Main RankingList Component ---
 const RankingList: React.FC = () => {
   
-  // Use hook to get the initial list and the correct answer
-  const { dailyUniversities, correctOrder } = useDailyChallenge();
+  // Use hook to get the initial list, the correct answer, and the daily ranking variable
+  const { dailyUniversities, correctOrder, rankingBy } = useDailyChallenge();
   
-  // Line 13: The error is fixed by the import above.
   const [universities, setUniversities] = useState<University[]>(dailyUniversities); 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [draggedId, setDraggedId] = useState<string | null>(null);
@@ -64,16 +75,29 @@ const RankingList: React.FC = () => {
         
         <header className="text-center mb-8">
           <h1 className="text-4xl sm:text-5xl font-extrabold text-indigo-800 tracking-tight">
-            UniRank Daily Challenge
+            UniRankle
           </h1>
           <p className="text-gray-600 mt-2 max-w-xl mx-auto text-lg">
-            Drag these **{universities.length}** universities to rank them from 1 (Highest) to {universities.length} (Lowest) based on Global Rank.
+            Today's challenge:
+          </p>
+          <p className="text-gray-600 mt-2 max-w-xl mx-auto text-lg">
+            Rank these five universities from 1 (Highest) to 5 (Lowest) based on <b>{formatRankingVariable(rankingBy)}</b>
           </p>
         </header>
 
-        <main className="grid md:grid-cols-3 gap-8">
+        <main className="space-y-8">
           
-          {/* Ranking List Column */}
+          {/* 1. Scoreboard (Top) */}
+          <div className="md:col-span-1">
+            <Scoreboard
+                score={score}
+                maxPossibleScore={maxPossibleScore}
+                isSubmitted={isSubmitted}
+                onSubmit={handleSubmit}
+            />
+          </div>
+
+          {/* 2. Ranking List (Bottom) */}
           <div className="md:col-span-2">
             <h2 className="text-2xl font-semibold mb-4 text-gray-700 border-b pb-2">
               Your Ranking
@@ -101,16 +125,6 @@ const RankingList: React.FC = () => {
                 );
               })}
             </div>
-          </div>
-          
-          {/* Scoreboard Column */}
-          <div className="md:col-span-1">
-            <Scoreboard
-                score={score}
-                maxPossibleScore={maxPossibleScore}
-                isSubmitted={isSubmitted}
-                onSubmit={handleSubmit}
-            />
           </div>
         </main>
       </div>

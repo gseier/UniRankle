@@ -1,38 +1,72 @@
-
 [
     {
         "id": "u1",
         "name": "Harvard University",
         "ranking": 1,
         "studentCount": 22608,
-        "imageUrl": "/images/unis/harvard.jpg"
+        "imageUrl": "/images/harvard.jpg"
     },
     {
         "id": "u2",
         "name": "Massachusetts Institute of Technology",
         "ranking": 2,
         "studentCount": 11549,
-        "imageUrl": "/images/unis/mit.jpg"
+        "imageUrl": "/images/mit.jpg"
     },
     {
         "id": "u3",
         "name": "Stanford University",
         "ranking": 3,
         "studentCount": 17422,
-        "imageUrl": "/images/unis/stanford.jpg"
+        "imageUrl": "/images/stanford.jpg"
     },
     {
         "id": "u4",
         "name": "University of Oxford",
         "ranking": 4,
         "studentCount": 26000,
-        "imageUrl": "/images/unis/oxford.jpg"
+        "imageUrl": "/images/oxford.jpg"
     },
     {
         "id": "u5",
         "name": "University of Cambridge",
         "ranking": 5,
         "studentCount": 21140,
-        "imageUrl": "/images/unis/cambridge.jpg"
+        "imageUrl": "/images/cambridge.jpg"
+    },
+    {
+        "id": "u6",
+        "name": "University of California Berkeley",
+        "ranking": 6,
+        "studentCount": 42565,
+        "imageUrl": "/images/berkeley.jpg"
+    },
+    {
+        "id": "u7",
+        "name": "University College London",
+        "ranking": 7,
+        "studentCount": 44910,
+        "imageUrl": "/images/ucl.jpg"
+    },
+    {
+        "id": "u8",
+        "name": "University of Washington Seattle",
+        "ranking": 8,
+        "studentCount": 49524,
+        "imageUrl": "/images/washington.jpg"
+    },
+    {
+        "id": "u9",
+        "name": "Yale University",
+        "ranking": 9,
+        "studentCount": 15600,
+        "imageUrl": "/images/yale.jpg"
+    },
+    {
+        "id": "u10",
+        "name": "Columbia University",
+        "ranking": 10,
+        "studentCount": 30580,
+        "imageUrl": "/images/columbia.jpg"
     }
 ]

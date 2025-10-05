@@ -11,11 +11,7 @@ const Scoreboard: React.FC<ScoreboardProps> = ({ score, maxPossibleScore, isSubm
     return (
         <div className="sticky top-8 space-y-6">
             
-            <div className="bg-indigo-50 p-6 rounded-2xl shadow-xl border border-indigo-200">
-                <h2 className="text-2xl font-bold text-indigo-700 mb-3">
-                    Game Status
-                </h2>
-                
+            <div className="bg-indigo-50 p-6 rounded-2xl shadow-xl border border-indigo-200">               
                 {isSubmitted ? (
                     <div className="text-center">
                         <p className="text-lg text-gray-700 font-medium">Your Final Score:</p>
