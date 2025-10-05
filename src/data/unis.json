@@ -78,5 +78,85 @@
         "studentCount": 30580,
         "country": "United States",
         "imageUrl": "/images/columbia.jpg"
+    },
+    {
+        "id": "u11",
+        "name": "Imperial College London",
+        "ranking": 11,
+        "studentCount": 21065,
+        "country": "United Kingdom",
+        "imageUrl": "/images/imperial.jpg"
+    },
+    {
+        "id": "u12",
+        "name": "Tsinghua University",
+        "ranking": 12,
+        "studentCount": 36000,
+        "country": "China",
+        "imageUrl": "/images/tsinghua.jpg"
+    },
+    {
+        "id": "u13",
+        "name": "University of California Los Angeles",
+        "ranking": 13,
+        "studentCount": 44542,
+        "country": "United States",
+        "imageUrl": "/images/ucla.jpg"
+    },
+    {
+        "id": "u14",
+        "name": "Johns Hopkins University",
+        "ranking": 14,
+        "studentCount": 21275,
+        "country": "United States",
+        "imageUrl": "/images/johnshopkins.jpg"
+    },
+    {
+        "id": "u15",
+        "name": "University of Pennsylvania",
+        "ranking": 15,
+        "studentCount": 22422,
+        "country": "United States",
+        "imageUrl": "/images/upenn.jpg"
+    },
+    {
+        "id": "u16",
+        "name": "Cornell University",
+        "ranking": 16,
+        "studentCount": 18978,
+        "country": "United States",
+        "imageUrl": "/images/cornell.jpg"
+    },
+    {
+        "id": "u17",
+        "name": "Princeton University",
+        "ranking": 17,
+        "studentCount": 8478,
+        "country": "United States",
+        "imageUrl": "/images/princeton.jpg"
+    },
+    {
+        "id": "u18",
+        "name": "University of California San Francisco",
+        "ranking": 18,
+        "studentCount": 3000,
+        "country": "United States",
+        "imageUrl": "/images/ucsf.jpg"
+    },
+    {
+        "id": "u19",
+        "name": "University of Toronto",
+        "ranking": 19,
+        "studentCount": 99700,
+        "country": "Canada",
+        "imageUrl": "/images/toronto.jpg"
+    },
+    {
+        "id": "u20",
+        "name": "National University of Singapore",
+        "ranking": 20,
+        "studentCount": 51568,
+        "country": "Singapore",
+        "imageUrl": "/images/nus.jpg"
     }
 ]
