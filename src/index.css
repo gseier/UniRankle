@@ -1,5 +1,7 @@
+/* 1. Tailwind v4.1 Import Directive */
 @import "tailwindcss";
 
+/* 2. Custom Keyframes (Necessary for the inline 'animation' property to work) */
 @keyframes gradient-flow {
   0%, 100% {
     background-position: 0% 50%;
@@ -8,13 +10,4 @@
     background-position: 100% 50%;
   }
 }
-
-/* 2. Define the Custom Utilities using standard CSS and variables */
-/* We will apply these properties directly to the h1 element */
-.uni-rankle-animated {
-  /* This is equivalent to Tailwind's old bg-400% */
-  background-size: 400% 400%; 
-  
-  /* This is equivalent to Tailwind's old animate-gradient-flow */
-  animation: gradient-flow 10s ease infinite;
-}
+/* Ensure the rest of the file is clean! */
