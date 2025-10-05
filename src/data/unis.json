@@ -158,5 +158,85 @@
         "studentCount": 51568,
         "country": "Singapore",
         "imageUrl": "/images/nus.jpg"
+    },
+    {
+        "id": "u21",
+        "name": "University of California San Diego",
+        "ranking": 21,
+        "studentCount": 35955,
+        "country": "United States",
+        "imageUrl": "/images/ucsd.jpg"
+    },
+    {
+        "id": "u22",
+        "name": "University of Michigan",
+        "ranking": 22,
+        "studentCount": 48116,
+        "country": "United States",
+        "imageUrl": "/images/michigan.jpg"
+    },
+    {
+        "id": "u23",
+        "name": "California Institute of Technology",
+        "ranking": 23,
+        "studentCount": 2237,
+        "country": "United States",
+        "imageUrl": "/images/caltech.jpg"
+    },
+    {
+        "id": "u24",
+        "name": "Northwestern University",
+        "ranking": 24,
+        "studentCount": 22327,
+        "country": "United States",
+        "imageUrl": "/images/northwestern.jpg"
+    },
+    {
+        "id": "u25",
+        "name": "Peking University",
+        "ranking": 25,
+        "studentCount": 44000,
+        "country": "China",
+        "imageUrl": "/images/peking.jpg"
+    },
+    {
+        "id": "u26",
+        "name": "University of Chicago",
+        "ranking": 26,
+        "studentCount": 17902,
+        "country": "United States",
+        "imageUrl": "/images/chicago.jpg"
+    },
+    {
+        "id": "u27",
+        "name": "Duke University",
+        "ranking": 27,
+        "studentCount": 16606,
+        "country": "United States",
+        "imageUrl": "/images/duke.jpg"
+    },
+    {
+        "id": "u28",
+        "name": "Nanyang Technological University",
+        "ranking": 28,
+        "studentCount": 33600,
+        "country": "Singapore",
+        "imageUrl": "/images/ntu.jpg"
+    },
+    {
+        "id": "u29",
+        "name": "University of Sydney",
+        "ranking": 29,
+        "studentCount": 73000,
+        "country": "Australia",
+        "imageUrl": "/images/sydney.jpg"
+    },
+    {
+        "id": "u30",
+        "name": "University of Melbourne",
+        "ranking": 30,
+        "studentCount": 54000,
+        "country": "Australia",
+        "imageUrl": "/images/melbourne.jpg"
     }
 ]
