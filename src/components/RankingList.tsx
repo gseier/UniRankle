@@ -77,14 +77,19 @@ const RankingList: React.FC = () => {
                     <h1
                         className="
                             text-6xl sm:text-7xl font-black 
+                            
+                            /* CRITICAL: Text clipping and transparency */
                             bg-clip-text text-transparent
+                            
+                            /* Custom class for animation/size */
+                            animated-title 
+                            
+                            /* THE GRADIENT: Uses your correctly defined colors */
                             bg-gradient-to-r from-academic-indigo via-academic-orange to-academic-cream
+                            
                             tracking-tightest leading-none"
-                        style={{
-                            // CRITICAL INLINE STYLES
-                            backgroundSize: '400% 400%',
-                            animation: 'gradient-flow 10s ease infinite',
-                        }}
+                        
+                        // Ensure all inline styles are removed
                     >
                         UniRankle
                     </h1>
@@ -95,6 +100,7 @@ const RankingList: React.FC = () => {
                         <br/>
                         <b>{formatRankingVariable(rankingBy)}</b>
                     </p>
+                    <link href="/src/style.css" rel="stylesheet"></link>
                 </header>
 
                 <main className="space-y-8">

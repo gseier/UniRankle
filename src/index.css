@@ -1,7 +1,7 @@
 /* 1. Tailwind v4.1 Import Directive */
+@import "./theme.css";
 @import "tailwindcss";
 
-/* 2. Custom Keyframes (Necessary for the inline 'animation' property to work) */
 @keyframes gradient-flow {
   0%, 100% {
     background-position: 0% 50%;
@@ -10,4 +10,11 @@
     background-position: 100% 50%;
   }
 }
-/* Ensure the rest of the file is clean! */
+
+/* 4. Custom Class to apply size and animation */
+.animated-title {
+  /* This is the critical property for visibility when clipping text */
+  background-size: 400% 400%; 
+  /* Applies the defined keyframe animation */
+  animation: gradient-flow 10s ease infinite;
+}
