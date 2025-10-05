@@ -4,6 +4,7 @@ import Scoreboard from './Scoreboard';
 import { useDailyChallenge } from '../hooks/useDailyChallenge';
 import { arrayMove, calculateScore, calculateMaxScore } from '../utils/dndUtils';
 import type { University } from '../types/University';
+import { MdOutlineLocalLibrary } from 'react-icons/md';
 
 // Helper function to format the ranking variable for display
 const formatRankingVariable = (key: keyof University | 'studentCount') => {
@@ -74,23 +75,22 @@ const RankingList: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-100 font-sans antialiased py-8">
       <div className="container mx-auto p-4 sm:p-8 max-w-4xl">
-        
         <header className="text-center mb-10">
           <h1 className="
             text-6xl sm:text-7xl font-black 
-            text-transparent bg-clip-text 
+            bg-clip-text text-transparent
             
-            /* Apply the large background size and the custom animation */
-            bg-400% animate-gradient-flow
+            /* NEW: Replaced utility classes with the single custom class */
+            uni-rankle-animated 
             
-            /* Enhanced Gradient Colors */
-            bg-gradient-to-r from-indigo-600 via-purple-500 to-pink-600 
+            /* ACADEMIC GRADIENT: Must remain here */
+            bg-gradient-to-r from-academic-indigo via-academic-orange to-academic-cream
             
             tracking-tightest leading-none"
           >
             UniRankle
           </h1>
-          <p className="text-gray-600 mt-4 max-w-xl mx-auto text-lg border-t pt-4">
+          <p className="text-gray-700 mt-4 max-w-xl mx-auto text-lg border-t pt-4">
             Today's challenge: 
             <br />
             Rank these five universities from 1 (Highest) to 5 (Lowest) based on 
@@ -113,7 +113,8 @@ const RankingList: React.FC = () => {
 
           {/* 2. Ranking List (Bottom) */}
           <div className="md:col-span-2">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-700 border-b pb-2">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-700 border-b pb-2 flex items-center">
+              <MdOutlineLocalLibrary className="w-7 h-7 mr-2 text-academic-indigo" /> 
               Your Ranking
             </h2>
             <div 
