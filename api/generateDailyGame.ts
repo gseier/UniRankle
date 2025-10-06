@@ -6,43 +6,55 @@ const prisma = new PrismaClient()
 export default async function handler(req: Request, res: Response) {
   const today = new Date().toISOString().slice(0, 10)
 
-  // Check if today's game already exists
-  const existing = await prisma.dailyGame.findUnique({
+  // 1. Fetch today's game with its entries
+  let existing = await prisma.dailyGame.findUnique({
     where: { dateKey: today },
-    include: {
-      entries: {
-        include: { university: true },
-      },
-    },
+    include: { entries: { include: { university: true } } },
   })
 
-  // If it exists, return it (with universities this time)
+  // 2. If it exists AND has entries, return it
   if (existing && existing.entries.length > 0) {
     return res.json(existing)
   }
 
-  // Otherwise, generate a new one
+  // 3. Otherwise create or fill it
   const rankingBy =
-    Math.random() > 0.5 ? RankingBy.RANKING : RankingBy.STUDENT_COUNT
+    existing?.rankingBy ??
+    (Math.random() > 0.5 ? RankingBy.RANKING : RankingBy.STUDENT_COUNT)
 
   const universities = await prisma.university.findMany()
   const shuffled = universities.sort(() => 0.5 - Math.random()).slice(0, 5)
 
-  const dailyGame = await prisma.dailyGame.create({
-    data: {
-      dateKey: today,
-      rankingBy,
-      entries: {
-        create: shuffled.map((u, i) => ({
-          universityId: u.id,
-          orderIndex: i,
-        })),
+  // If the game exists but has no entries, fill them
+  if (existing) {
+    await prisma.dailyGameUniversity.createMany({
+      data: shuffled.map((u, i) => ({
+        dailyGameId: existing!.id,
+        universityId: u.id,
+        orderIndex: i,
+      })),
+    })
+  } else {
+    existing = await prisma.dailyGame.create({
+      data: {
+        dateKey: today,
+        rankingBy,
+        entries: {
+          create: shuffled.map((u, i) => ({
+            universityId: u.id,
+            orderIndex: i,
+          })),
+        },
       },
-    },
-    include: {
-      entries: { include: { university: true } }, // This is the key part
-    },
+      include: { entries: { include: { university: true } } },
+    })
+  }
+
+  // 4. Return updated game (with included universities)
+  const fullGame = await prisma.dailyGame.findUnique({
+    where: { dateKey: today },
+    include: { entries: { include: { university: true } } },
   })
 
-  res.json(dailyGame)
+  res.json(fullGame)
 }

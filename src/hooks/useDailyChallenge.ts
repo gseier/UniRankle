@@ -1,28 +1,53 @@
 import { useEffect, useState } from 'react'
 import type { University } from '../types/University'
 
+interface DailyGameResponse {
+  id: string
+  dateKey: string
+  rankingBy: 'RANKING' | 'STUDENT_COUNT'
+  entries: {
+    orderIndex: number
+    university: University
+  }[]
+}
+
 export const useDailyChallenge = () => {
-  const [data, setData] = useState<{
-    dailyUniversities: University[],
-    correctOrder: University[],
-    rankingBy: 'ranking' | 'studentCount'
-  }>({ dailyUniversities: [], correctOrder: [], rankingBy: 'ranking' })
+  const [dailyUniversities, setDailyUniversities] = useState<University[]>([])
+  const [correctOrder, setCorrectOrder] = useState<University[]>([])
+  const [rankingBy, setRankingBy] = useState<'ranking' | 'studentCount'>('ranking')
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    fetch('/api/generateDailyGame')
-      .then(res => res.json())
-      .then((game: { entries: { university: University }[], rankingBy: string }) => {
-        const unis = game.entries.map((e: { university: University }) => e.university)
-        const correctOrder = [...unis].sort((a, b) =>
-          game.rankingBy === 'STUDENT_COUNT' ? b.studentCount - a.studentCount : a.ranking - b.ranking
+    const fetchDaily = async () => {
+      try {
+        const res = await fetch('/api/generateDailyGame')
+        const data: DailyGameResponse = await res.json()
+
+        // Convert rankingBy enum
+        const variable = data.rankingBy === 'STUDENT_COUNT' ? 'studentCount' : 'ranking'
+
+        // Extract universities
+        const unis = data.entries.map(e => e.university)
+
+        // Determine correct order
+        const sorted = [...unis].sort((a, b) =>
+          variable === 'studentCount'
+            ? b.studentCount - a.studentCount
+            : a.ranking - b.ranking
         )
-        setData({
-          dailyUniversities: unis.sort(() => 0.5 - Math.random()),
-          correctOrder,
-          rankingBy: game.rankingBy === 'STUDENT_COUNT' ? 'studentCount' : 'ranking'
-        })
-      })
+
+        setDailyUniversities(unis.sort(() => 0.5 - Math.random())) // shuffle display
+        setCorrectOrder(sorted)
+        setRankingBy(variable)
+      } catch (err) {
+        console.error('Failed to fetch daily challenge:', err)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchDaily()
   }, [])
 
-  return data
+  return { dailyUniversities, correctOrder, rankingBy, isLoading }
 }

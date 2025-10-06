@@ -20,13 +20,16 @@ const formatRankingVariable = (key: keyof University | 'studentCount') => {
 
 // --- Main RankingList Component ---
 const RankingList: React.FC = () => {
+
+    const { dailyUniversities, correctOrder, rankingBy, isLoading } = useDailyChallenge();
     
-    const { dailyUniversities, correctOrder, rankingBy } = useDailyChallenge();
     
-    const [universities, setUniversities] = useState<University[]>(dailyUniversities); 
+
+    const [universities, setUniversities] = useState<University[]>(dailyUniversities);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [draggedId, setDraggedId] = useState<string | null>(null);
     const [score, setScore] = useState<number | null>(null);
+    
 
     // --- Native D&D Logic ---
     const handleDragStart = useCallback((e: React.DragEvent<HTMLDivElement>) => {
@@ -72,6 +75,25 @@ const RankingList: React.FC = () => {
         body: JSON.stringify({ score: finalScore }),
         }).catch((err) => console.error('Failed to save score', err));
     }, [universities, correctOrder, isSubmitted]);
+    
+   
+
+    if (isLoading) {
+        return (
+         <div className="flex items-center justify-center min-h-screen text-gray-600">
+              Loading today’s challenge...
+         </div>
+         )
+    }
+
+    if (!dailyUniversities.length) {
+        return (
+          <div className="flex items-center justify-center min-h-screen text-gray-600">
+           No universities found for today’s challenge.
+         </div>
+        )
+    }
+
     
     const maxPossibleScore = calculateMaxScore(universities.length);
 
