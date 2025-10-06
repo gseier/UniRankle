@@ -85,9 +85,9 @@ function ensureUserIdCookie(req: express.Request, res: express.Response): string
 }
 
 // --- routes ---
-app.get('/api/health', (_req, res) => res.json({ ok: true }));
+app.get('/health', (_req, res) => res.json({ ok: true }));
 
-app.get('/api/daily', async (req, res) => {
+app.get('/daily', async (req, res) => {
   try {
     ensureUserIdCookie(req, res);
     const dateKey = getUTCDateKey(new Date());
@@ -106,7 +106,7 @@ app.get('/api/daily', async (req, res) => {
   }
 });
 
-app.post('/api/submissions', async (req, res) => {
+app.post('/submissions', async (req, res) => {
   try {
     const userId = ensureUserIdCookie(req, res);
     const { dateKey, order }: { dateKey: string; order: string[] } = req.body;
@@ -161,7 +161,7 @@ app.post('/api/submissions', async (req, res) => {
   }
 });
 
-app.get('/api/stats', async (req, res) => {
+app.get('/stats', async (req, res) => {
   try {
     const dateKey = (req.query.dateKey as string) || getUTCDateKey(new Date());
     const game = await prisma.dailyGame.findUnique({ where: { dateKey } });
@@ -185,7 +185,7 @@ app.get('/api/stats', async (req, res) => {
 });
 
 // OPTIONAL: user history (no login)
-app.get('/api/me/history', async (req, res) => {
+app.get('/me/history', async (req, res) => {
   const userId = req.cookies?.userId;
   if (!userId) return res.json({ submissions: [] });
 
