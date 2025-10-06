@@ -1,86 +1,50 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
 model University {
-  id            Int      @id @default(autoincrement())
-  name          String   @unique
-  score         Int      @default(0) // The actual, true score/rank value
-  studentCount  Int?
-  country       String?
-  createdAt     DateTime @default(now())
+  id           String                @id @default(uuid())
+  name         String
+  studentCount Int
+  country      String
+  createdAt    DateTime              @default(now())
+  externalId   String?
+  imageUrl     String
+  ranking      Int
+  updatedAt    DateTime              @updatedAt
+  dailyEntries DailyGameUniversity[]
 }
 
-// --- Game Logic ---
+model DailyGame {
+  id        String                @id @default(uuid())
+  dateKey   String                @unique
+  rankingBy RankingBy
+  createdAt DateTime              @default(now())
+  entries   DailyGameUniversity[]
 
-// Model to define the specific game content for a given day. 
-// This ensures all users see the same challenge.
-model DailyChallenge {
-  id                Int          @id @default(autoincrement())
-  
-  // Date of the challenge (e.g., "2025-10-06"). 
-  // This must be unique to prevent multiple challenges on the same day.
-  dateString        String       @unique 
-  
-  // The list of University IDs chosen for this day's ranking challenge
-  universityIds     Int[]        // e.g., [15, 22, 5, 8, 30]
-  
-  // Relationships
-  gameResults       GameResult[]
+  @@index([dateKey])
 }
 
-// --- Player Stats (Cookie-Based) ---
+model DailyGameUniversity {
+  id           String     @id @default(uuid())
+  dailyGameId  String
+  universityId String
+  orderIndex   Int
+  createdAt    DateTime   @default(now())
+  dailyGame    DailyGame  @relation(fields: [dailyGameId], references: [id], onDelete: Cascade)
+  university   University @relation(fields: [universityId], references: [id], onDelete: Cascade)
 
-// Model to track individual players using their client-generated cookie ID.
-// No login system is required.
-model Player {
-  // This is the unique ID (UUID) stored in the user's cookie
-  cookieId      String   @id @map("id") 
-  
-  // Aggregated lifetime stats
-  gamesPlayed   Int      @default(0)
-  totalScore    Int      @default(0) // Sum of scores across all completed games
-  
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  
-  // Relationships
-  gameResults   GameResult[]
+  @@unique([dailyGameId, universityId])
+  @@index([dailyGameId, orderIndex])
 }
 
-// Model to record the result of a single game played by a player
-model GameResult {
-  id               Int      @id @default(autoincrement())
-  
-  // Foreign Keys
-  playerId         String
-  dailyChallengeId Int
-  
-  // Game performance metrics
-  finalScore       Int
-  timeTakenSeconds Int?
-  
-  // State tracking
-  isCompleted      Boolean  @default(false)
-  submittedAt      DateTime @default(now())
-  
-  // Relationships
-  player           Player         @relation(fields: [playerId], references: [cookieId])
-  challenge        DailyChallenge @relation(fields: [dailyChallengeId], references: [id])
-  
-  // Constraint: A player can only have one result per daily challenge.
-  @@unique([playerId, dailyChallengeId])
+enum RankingBy {
+  RANKING
+  STUDENT_COUNT
 }
