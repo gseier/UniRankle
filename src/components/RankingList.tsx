@@ -25,7 +25,11 @@ const RankingList: React.FC = () => {
     
     
 
-    const [universities, setUniversities] = useState<University[]>(dailyUniversities);
+    const [universities, setUniversities] = useState<University[]>([]);
+
+    React.useEffect(() => {
+        setUniversities(dailyUniversities);
+    }, [dailyUniversities]);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [draggedId, setDraggedId] = useState<string | null>(null);
     const [score, setScore] = useState<number | null>(null);
