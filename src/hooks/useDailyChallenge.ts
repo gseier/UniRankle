@@ -1,65 +1,28 @@
-import { useMemo } from 'react';
-import type { University } from '../types/University';
-import universityData from '../data/unis.json';
-import type { RankVariable } from '../utils/dndUtils';
+import { useEffect, useState } from 'react'
+import type { University } from '../types/University'
 
-// Define all possible variables a user might have to rank by
-const RANKING_VARIABLES: RankVariable[] = ['ranking', 'studentCount'];
-const CHALLENGE_COUNT = 5; // The required number of universities per game
-
-// --- HELPER FUNCTIONS ---
-const getRandomElement = <T,>(arr: T[]): T => {
-    return arr[Math.floor(Math.random() * arr.length)];
-};
-const shuffleArray = <T,>(array: T[]): T[] => {
-    const newArray = [...array];
-    for (let i = newArray.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-    }
-    return newArray;
-};
-// ----------------------------
-
-/**
- * Hook to manage the state of the daily university challenge data.
- */
 export const useDailyChallenge = () => {
-  const allUniversities: University[] = universityData as University[];
+  const [data, setData] = useState<{
+    dailyUniversities: University[],
+    correctOrder: University[],
+    rankingBy: 'ranking' | 'studentCount'
+  }>({ dailyUniversities: [], correctOrder: [], rankingBy: 'ranking' })
 
-  // 1. Determine the ranking variable for the day
-  const rankingBy: RankVariable = useMemo(() => {
-    return getRandomElement(RANKING_VARIABLES);
-  }, []);
+  useEffect(() => {
+    fetch('/api/generateDailyGame')
+      .then(res => res.json())
+      .then((game: { entries: { university: University }[], rankingBy: string }) => {
+        const unis = game.entries.map((e: { university: University }) => e.university)
+        const correctOrder = [...unis].sort((a, b) =>
+          game.rankingBy === 'STUDENT_COUNT' ? b.studentCount - a.studentCount : a.ranking - b.ranking
+        )
+        setData({
+          dailyUniversities: unis.sort(() => 0.5 - Math.random()),
+          correctOrder,
+          rankingBy: game.rankingBy === 'STUDENT_COUNT' ? 'studentCount' : 'ranking'
+        })
+      })
+  }, [])
 
-  const { initialDisplayOrder, correctOrder } = useMemo(() => {
-    // 2. Select 5 unique random universities
-    const shuffledAll = shuffleArray(allUniversities);
-    const selectedUniversities = shuffledAll.slice(0, CHALLENGE_COUNT);
-
-    // 3. Determine the definitively correct order based on the 'rankingBy' variable
-    const correctList = [...selectedUniversities].sort((a, b) => {
-        const valA = a[rankingBy];
-        const valB = b[rankingBy];
-
-        if (typeof valA === 'number' && typeof valB === 'number') {
-            if (rankingBy === 'studentCount') {
-                // Sort descendingly for studentCount (Highest to Lowest)
-                return valB - valA; 
-            } else {
-                // Sort ascendingly for 'ranking' (Lowest Rank number is highest position)
-                return valA - valB;
-            }
-        }
-        return 0;
-    });
-
-    // 4. Randomize the initial list presented to the user
-    const initialDisplay = shuffleArray(selectedUniversities);
-
-    return { initialDisplayOrder: initialDisplay, correctOrder: correctList };
-
-  }, [allUniversities, rankingBy]); 
-
-  return { dailyUniversities: initialDisplayOrder, correctOrder, rankingBy };
-};
+  return data
+}

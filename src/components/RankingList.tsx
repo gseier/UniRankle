@@ -66,6 +66,11 @@ const RankingList: React.FC = () => {
         const finalScore = calculateScore(universities, correctOrder);
         setScore(finalScore);
         setIsSubmitted(true);
+        fetch('/api/saveScore', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ score: finalScore }),
+        }).catch((err) => console.error('Failed to save score', err));
     }, [universities, correctOrder, isSubmitted]);
     
     const maxPossibleScore = calculateMaxScore(universities.length);

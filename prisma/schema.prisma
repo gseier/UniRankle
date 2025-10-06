@@ -48,3 +48,11 @@ enum RankingBy {
   RANKING
   STUDENT_COUNT
 }
+
+model GameScore {
+  id        String   @id @default(uuid())
+  cookieId  String   // identifies user without login
+  dateKey   String   // matches DailyGame.dateKey
+  score     Int
+  createdAt DateTime @default(now())
+}
