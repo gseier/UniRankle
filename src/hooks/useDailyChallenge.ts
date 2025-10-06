@@ -39,6 +39,7 @@ export const useDailyChallenge = () => {
         setDailyUniversities(unis.sort(() => 0.5 - Math.random())) // shuffle display
         setCorrectOrder(sorted)
         setRankingBy(variable)
+        console.log("DAILY GAME DATA:", data)
       } catch (err) {
         console.error('Failed to fetch daily challenge:', err)
       } finally {
