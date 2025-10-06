@@ -1,50 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
-}
-
-model University {
-  id           String                @id @default(uuid())
-  name         String
-  studentCount Int
-  country      String
-  createdAt    DateTime              @default(now())
-  externalId   String?
-  imageUrl     String
-  ranking      Int
-  updatedAt    DateTime              @updatedAt
-  dailyEntries DailyGameUniversity[]
-}
-
-model DailyGame {
-  id        String                @id @default(uuid())
-  dateKey   String                @unique
-  rankingBy RankingBy
-  createdAt DateTime              @default(now())
-  entries   DailyGameUniversity[]
-
-  @@index([dateKey])
-}
-
-model DailyGameUniversity {
-  id           String     @id @default(uuid())
-  dailyGameId  String
-  universityId String
-  orderIndex   Int
-  createdAt    DateTime   @default(now())
-  dailyGame    DailyGame  @relation(fields: [dailyGameId], references: [id], onDelete: Cascade)
-  university   University @relation(fields: [universityId], references: [id], onDelete: Cascade)
-
-  @@unique([dailyGameId, universityId])
-  @@index([dailyGameId, orderIndex])
 }
 
 enum RankingBy {
   RANKING
   STUDENT_COUNT
+}
+
+model University {
+  id           String   @id @default(uuid())
+  externalId   String? // optional id matching your JSON id if you have one
+  name         String
+  ranking      Int
+  studentCount Int
+  country      String
+  imageUrl     String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // relation
+  dailyEntries DailyGameUniversity[]
+}
+
+model DailyGame {
+  id           String   @id @default(uuid())
+  dateKey      String   @unique // ISO date like "2025-10-06", one game per date
+  rankingBy    RankingBy
+  createdAt    DateTime @default(now())
+
+  // relation to pivot storing chosen universities and their order
+  entries      DailyGameUniversity[]
+
+  @@index([dateKey])
+}
+
+model DailyGameUniversity {
+  id          String   @id @default(uuid())
+  dailyGame   DailyGame @relation(fields: [dailyGameId], references: [id], onDelete: Cascade)
+  dailyGameId String
+  university  University @relation(fields: [universityId], references: [id], onDelete: Cascade)
+  universityId String
+  orderIndex  Int // 0-based index for the correct order (0 = best / top)
+  createdAt   DateTime @default(now())
+
+  @@unique([dailyGameId, universityId])
+  @@index([dailyGameId, orderIndex])
 }
