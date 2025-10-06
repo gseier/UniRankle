@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -27,7 +28,6 @@ model DailyGame {
   rankingBy RankingBy
   createdAt DateTime              @default(now())
   entries   DailyGameUniversity[]
-  submissions Submission[]
 
   @@index([dateKey])
 }
@@ -48,19 +48,4 @@ model DailyGameUniversity {
 enum RankingBy {
   RANKING
   STUDENT_COUNT
-}
-
-
-model Submission {
-  id           String   @id @default(uuid())
-  dailyGameId  String
-  userId       String
-  score        Int
-  finalOrder   Json?    // e.g., ["uuid1", "uuid2", ...]
-  createdAt    DateTime @default(now())
-
-  dailyGame    DailyGame @relation(fields: [dailyGameId], references: [id], onDelete: Cascade)
-
-  @@unique([dailyGameId, userId])
-  @@index([dailyGameId])
 }

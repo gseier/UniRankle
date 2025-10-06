@@ -1,48 +1,65 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import type { University } from '../types/University';
-import type { DailyResponse, RankingByApi } from '../types/api';
+import universityData from '../data/unis.json';
+import type { RankVariable } from '../utils/dndUtils';
 
-const CHALLENGE_COUNT = 5;
+// Define all possible variables a user might have to rank by
+const RANKING_VARIABLES: RankVariable[] = ['ranking', 'studentCount'];
+const CHALLENGE_COUNT = 5; // The required number of universities per game
 
-const shuffleArray = <T,>(array: T[]): T[] => {
-  const newArray = [...array];
-  for (let i = newArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-  }
-  return newArray;
+// --- HELPER FUNCTIONS ---
+const getRandomElement = <T,>(arr: T[]): T => {
+    return arr[Math.floor(Math.random() * arr.length)];
 };
+const shuffleArray = <T,>(array: T[]): T[] => {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+};
+// ----------------------------
 
+/**
+ * Hook to manage the state of the daily university challenge data.
+ */
 export const useDailyChallenge = () => {
-  const [rankingByApi, setRankingByApi] = useState<RankingByApi>('RANKING');
-  const [universities, setUniversities] = useState<University[]>([]);
-  const [dateKey, setDateKey] = useState<string>('');
+  const allUniversities: University[] = universityData as University[];
 
-  useEffect(() => {
-    (async () => {
-      const res = await fetch('/api/daily', { credentials: 'include' });
-      const data: DailyResponse = await res.json();
-      setRankingByApi(data.rankingBy);
-      setUniversities(data.universities);
-      setDateKey(data.dateKey);
-    })();
+  // 1. Determine the ranking variable for the day
+  const rankingBy: RankVariable = useMemo(() => {
+    return getRandomElement(RANKING_VARIABLES);
   }, []);
 
-  const rankingBy = useMemo<'ranking' | 'studentCount'>(() => {
-    return rankingByApi === 'STUDENT_COUNT' ? 'studentCount' : 'ranking';
-  }, [rankingByApi]);
-
   const { initialDisplayOrder, correctOrder } = useMemo(() => {
-    if (universities.length !== CHALLENGE_COUNT) {
-      return { initialDisplayOrder: [], correctOrder: [] as University[] };
-    }
-    const correctList = [...universities].sort((a, b) => {
-      if (rankingBy === 'studentCount') return b.studentCount - a.studentCount;
-      return a.ranking - b.ranking;
-    });
-    const initialDisplay = shuffleArray(universities);
-    return { initialDisplayOrder: initialDisplay, correctOrder: correctList };
-  }, [universities, rankingBy]);
+    // 2. Select 5 unique random universities
+    const shuffledAll = shuffleArray(allUniversities);
+    const selectedUniversities = shuffledAll.slice(0, CHALLENGE_COUNT);
 
-  return { dateKey, dailyUniversities: initialDisplayOrder, correctOrder, rankingBy };
+    // 3. Determine the definitively correct order based on the 'rankingBy' variable
+    const correctList = [...selectedUniversities].sort((a, b) => {
+        const valA = a[rankingBy];
+        const valB = b[rankingBy];
+
+        if (typeof valA === 'number' && typeof valB === 'number') {
+            if (rankingBy === 'studentCount') {
+                // Sort descendingly for studentCount (Highest to Lowest)
+                return valB - valA; 
+            } else {
+                // Sort ascendingly for 'ranking' (Lowest Rank number is highest position)
+                return valA - valB;
+            }
+        }
+        return 0;
+    });
+
+    // 4. Randomize the initial list presented to the user
+    const initialDisplay = shuffleArray(selectedUniversities);
+
+    return { initialDisplayOrder: initialDisplay, correctOrder: correctList };
+
+  }, [allUniversities, rankingBy]); 
+
+  return { dailyUniversities: initialDisplayOrder, correctOrder, rankingBy };
 };
