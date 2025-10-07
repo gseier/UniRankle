@@ -61,22 +61,23 @@ const RankingList: React.FC = () => {
   }, [dailyUniversities]);
 
   // Countdown to next challenge
-  useEffect(() => {
-    if (!alreadyPlayed && !isSubmitted) return;
-    const updateCountdown = () => {
-      const now = new Date();
-      const tomorrow = new Date();
-      tomorrow.setHours(24, 0, 0, 0);
-      const diff = Math.max(0, tomorrow.getTime() - now.getTime());
-      const hrs = Math.floor(diff / (1000 * 60 * 60));
-      const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const secs = Math.floor((diff % (1000 * 60)) / 1000);
-      setCountdown(`${hrs}h ${mins}m ${secs}s`);
-    };
-    updateCountdown();
-    const timer = setInterval(updateCountdown, 1000);
-    return () => clearInterval(timer);
-  }, [alreadyPlayed, isSubmitted]);
+    useEffect(() => {
+        const updateCountdown = () => {
+            const now = new Date();
+            const tomorrow = new Date();
+            tomorrow.setHours(24, 0, 0, 0);
+            const diff = Math.max(0, tomorrow.getTime() - now.getTime());
+            const hrs = Math.floor(diff / (1000 * 60 * 60));
+            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const secs = Math.floor((diff % (1000 * 60)) / 1000);
+            setCountdown(`${hrs}h ${mins}m ${secs}s`);
+        };
+
+        updateCountdown();
+        const timer = setInterval(updateCountdown, 1000);
+        return () => clearInterval(timer);
+    }, []);
+
 
   // Check if player has already played today
   useEffect(() => {
