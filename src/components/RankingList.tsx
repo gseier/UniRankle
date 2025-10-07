@@ -6,15 +6,11 @@ import { arrayMove, calculateScore, calculateMaxScore } from '../utils/dndUtils'
 import type { University } from '../types/University';
 import { MdOutlineLocalLibrary } from 'react-icons/md';
 
-// Helper function to format the ranking variable for display
 const formatRankingVariable = (key: keyof University | 'studentCount') => {
   switch (key) {
-    case 'ranking':
-      return 'Global Rank';
-    case 'studentCount':
-      return 'Student Count';
-    default:
-      return 'Unknown Metric';
+    case 'ranking': return 'Global Rank';
+    case 'studentCount': return 'Student Count';
+    default: return 'Unknown Metric';
   }
 };
 
@@ -30,13 +26,25 @@ const RankingList: React.FC = () => {
   const [previousScore, setPreviousScore] = useState<number | null>(null);
   const [avgScore, setAvgScore] = useState<number | null>(null);
   const [countdown, setCountdown] = useState<string>('');
+  const [showPopup, setShowPopup] = useState(false);
 
-  // Load universities once fetched
+  // Load universities (and restore saved order if exists)
   useEffect(() => {
+    const savedOrder = localStorage.getItem('uniOrder');
+    if (savedOrder && dailyUniversities.length) {
+      const ids = JSON.parse(savedOrder) as string[];
+      const ordered = ids
+        .map(id => dailyUniversities.find(u => u.id === id))
+        .filter(Boolean) as University[];
+      if (ordered.length === dailyUniversities.length) {
+        setUniversities(ordered);
+        return;
+      }
+    }
     setUniversities(dailyUniversities);
   }, [dailyUniversities]);
 
-  // Countdown for next challenge
+  // Countdown to next challenge
   useEffect(() => {
     if (!alreadyPlayed && !isSubmitted) return;
     const updateCountdown = () => {
@@ -54,17 +62,11 @@ const RankingList: React.FC = () => {
     return () => clearInterval(timer);
   }, [alreadyPlayed, isSubmitted]);
 
-  // On mount, check if player already played today
+  // Check if player has already played today
   useEffect(() => {
     (async () => {
-      await fetch('/api/getScores'); // quick ping so DB connection ready
-      // Check cookie-based "already played"
-      const r = await fetch('/api/saveScore', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ score: -1 }), // test request (invalid)
-      });
-      const data = await r.json();
+      const res = await fetch('/api/checkPlayed');
+      const data = await res.json();
       if (data.alreadyPlayed) {
         setAlreadyPlayed(true);
         setIsSubmitted(true);
@@ -76,7 +78,7 @@ const RankingList: React.FC = () => {
     })().catch(() => {});
   }, []);
 
-  // --- D&D ---
+  // --- D&D logic ---
   const handleDragStart = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     const id = e.currentTarget.getAttribute('data-id');
     if (id) {
@@ -108,14 +110,18 @@ const RankingList: React.FC = () => {
     const finalScore = calculateScore(universities, correctOrder);
     setScore(finalScore);
     setIsSubmitted(true);
-    setAlreadyPlayed(true); // prevent resubmission visually
+    setAlreadyPlayed(true);
+    setShowPopup(true);
+
+    // Save order so it stays fixed
+    localStorage.setItem('uniOrder', JSON.stringify(universities.map(u => u.id)));
 
     fetch('/api/saveScore', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ score: finalScore }),
     })
-      .then((res) => res.json())
+      .then(res => res.json())
       .then(async (data) => {
         if (data.success || data.alreadyPlayed) {
           const avgRes = await fetch('/api/getScores');
@@ -124,10 +130,10 @@ const RankingList: React.FC = () => {
           setPreviousScore(data.previousScore ?? finalScore);
         }
       })
-      .catch((err) => console.error('Failed to save score', err));
+      .catch(err => console.error('Failed to save score', err));
   }, [universities, correctOrder, isSubmitted, alreadyPlayed]);
 
-  // --- States ---
+  // --- Loading states ---
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen text-gray-600">
@@ -216,12 +222,12 @@ const RankingList: React.FC = () => {
         </main>
       </div>
 
-      {/* --- Popup Overlay After Submission --- */}
-      {isSubmitted && (
+      {/* Popup after submission */}
+      {showPopup && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-8 text-center shadow-2xl w-11/12 max-w-md animate-fadeIn">
             <h2 className="text-3xl font-bold text-indigo-700 mb-3">
-              You’ve already played today!
+              You’ve completed today’s challenge!
             </h2>
             <p className="text-gray-700 text-lg mb-2">
               Your score: <b>{previousScore ?? score}</b>
@@ -229,10 +235,16 @@ const RankingList: React.FC = () => {
             <p className="text-gray-600 mb-4">
               Average score today: <b>{avgScore ?? '...'}</b>
             </p>
-            <div className="bg-indigo-50 border border-indigo-200 px-6 py-3 rounded-xl shadow-md">
+            <div className="bg-indigo-50 border border-indigo-200 px-6 py-3 rounded-xl shadow-md mb-6">
               <p className="text-gray-700 font-medium">Next challenge starts in:</p>
               <p className="text-2xl font-bold text-indigo-600 mt-1">{countdown}</p>
             </div>
+            <button
+              onClick={() => setShowPopup(false)}
+              className="mt-2 px-6 py-3 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition"
+            >
+              OK
+            </button>
           </div>
         </div>
       )}
