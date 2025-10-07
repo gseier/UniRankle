@@ -18,7 +18,6 @@ const formatRankingVariable = (key: keyof University | 'studentCount') => {
   }
 };
 
-// --- Main RankingList Component ---
 const RankingList: React.FC = () => {
   const { dailyUniversities, correctOrder, rankingBy, isLoading } = useDailyChallenge();
 
@@ -32,14 +31,14 @@ const RankingList: React.FC = () => {
   const [avgScore, setAvgScore] = useState<number | null>(null);
   const [countdown, setCountdown] = useState<string>('');
 
-  // Update displayed universities once loaded
+  // Load universities once fetched
   useEffect(() => {
     setUniversities(dailyUniversities);
   }, [dailyUniversities]);
 
   // Countdown for next challenge
   useEffect(() => {
-    if (!alreadyPlayed) return;
+    if (!alreadyPlayed && !isSubmitted) return;
     const updateCountdown = () => {
       const now = new Date();
       const tomorrow = new Date();
@@ -53,9 +52,31 @@ const RankingList: React.FC = () => {
     updateCountdown();
     const timer = setInterval(updateCountdown, 1000);
     return () => clearInterval(timer);
-  }, [alreadyPlayed]);
+  }, [alreadyPlayed, isSubmitted]);
 
-  // --- Native D&D Logic ---
+  // On mount, check if player already played today
+  useEffect(() => {
+    (async () => {
+      await fetch('/api/getScores'); // quick ping so DB connection ready
+      // Check cookie-based "already played"
+      const r = await fetch('/api/saveScore', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ score: -1 }), // test request (invalid)
+      });
+      const data = await r.json();
+      if (data.alreadyPlayed) {
+        setAlreadyPlayed(true);
+        setIsSubmitted(true);
+        setPreviousScore(data.previousScore);
+        const avgRes = await fetch('/api/getScores');
+        const avgData = await avgRes.json();
+        setAvgScore(avgData.average);
+      }
+    })().catch(() => {});
+  }, []);
+
+  // --- D&D ---
   const handleDragStart = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     const id = e.currentTarget.getAttribute('data-id');
     if (id) {
@@ -81,13 +102,13 @@ const RankingList: React.FC = () => {
 
   const handleDragEnd = useCallback(() => setDraggedId(null), []);
 
-  // --- Submit and check if already played ---
+  // --- Submit handler ---
   const handleSubmit = useCallback(() => {
-    if (isSubmitted) return;
-
+    if (isSubmitted || alreadyPlayed) return;
     const finalScore = calculateScore(universities, correctOrder);
     setScore(finalScore);
     setIsSubmitted(true);
+    setAlreadyPlayed(true); // prevent resubmission visually
 
     fetch('/api/saveScore', {
       method: 'POST',
@@ -96,23 +117,17 @@ const RankingList: React.FC = () => {
     })
       .then((res) => res.json())
       .then(async (data) => {
-        if (data.alreadyPlayed) {
-          setAlreadyPlayed(true);
-          setPreviousScore(data.previousScore);
+        if (data.success || data.alreadyPlayed) {
           const avgRes = await fetch('/api/getScores');
           const avgData = await avgRes.json();
           setAvgScore(avgData.average);
-        } else if (data.success) {
-          // fetch average for post-game stats
-          const avgRes = await fetch('/api/getScores');
-          const avgData = await avgRes.json();
-          setAvgScore(avgData.average);
+          setPreviousScore(data.previousScore ?? finalScore);
         }
       })
       .catch((err) => console.error('Failed to save score', err));
-  }, [universities, correctOrder, isSubmitted]);
+  }, [universities, correctOrder, isSubmitted, alreadyPlayed]);
 
-  // --- Loading and empty states ---
+  // --- States ---
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen text-gray-600">
@@ -129,32 +144,10 @@ const RankingList: React.FC = () => {
     );
   }
 
-  // --- Already played UI ---
-  if (alreadyPlayed) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-center bg-gray-100 p-6">
-        <h1 className="text-5xl font-extrabold text-indigo-700 mb-6">
-          You’ve already played today!
-        </h1>
-        <p className="text-xl text-gray-700 mb-2">
-          Your previous score: <b>{previousScore}</b>
-        </p>
-        <p className="text-lg text-gray-600 mb-6">
-          Average score today: <b>{avgScore ?? 'Loading...'}</b>
-        </p>
-        <div className="bg-indigo-50 border border-indigo-200 px-6 py-4 rounded-xl shadow-md">
-          <p className="text-gray-700 font-medium">Next challenge starts in:</p>
-          <p className="text-3xl font-bold text-indigo-600 mt-1">{countdown}</p>
-        </div>
-      </div>
-    );
-  }
-
-  // --- Normal game UI ---
   const maxPossibleScore = calculateMaxScore(universities.length);
 
   return (
-    <div className="min-h-screen bg-gray-100 font-sans antialiased py-8">
+    <div className="relative min-h-screen bg-gray-100 font-sans antialiased py-8">
       <div className="container mx-auto p-4 sm:p-8 max-w-4xl">
         <header className="text-center mb-10">
           <h1
@@ -178,7 +171,6 @@ const RankingList: React.FC = () => {
         </header>
 
         <main className="space-y-8">
-          {/* 1. Scoreboard (Top) */}
           <div className="md:col-span-1">
             <Scoreboard
               score={score}
@@ -188,7 +180,6 @@ const RankingList: React.FC = () => {
             />
           </div>
 
-          {/* 2. Ranking List (Bottom) */}
           <div className="md:col-span-2">
             <h2 className="text-2xl font-semibold mb-4 text-gray-700 border-b pb-2 flex items-center">
               <MdOutlineLocalLibrary className="w-7 h-7 mr-2 text-academic-indigo" />
@@ -204,7 +195,6 @@ const RankingList: React.FC = () => {
                 );
                 const correctRank =
                   correctIndex !== -1 ? correctIndex + 1 : undefined;
-
                 return (
                   <SortableItem
                     key={uni.id}
@@ -225,6 +215,27 @@ const RankingList: React.FC = () => {
           </div>
         </main>
       </div>
+
+      {/* --- Popup Overlay After Submission --- */}
+      {isSubmitted && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-8 text-center shadow-2xl w-11/12 max-w-md animate-fadeIn">
+            <h2 className="text-3xl font-bold text-indigo-700 mb-3">
+              You’ve already played today!
+            </h2>
+            <p className="text-gray-700 text-lg mb-2">
+              Your score: <b>{previousScore ?? score}</b>
+            </p>
+            <p className="text-gray-600 mb-4">
+              Average score today: <b>{avgScore ?? '...'}</b>
+            </p>
+            <div className="bg-indigo-50 border border-indigo-200 px-6 py-3 rounded-xl shadow-md">
+              <p className="text-gray-700 font-medium">Next challenge starts in:</p>
+              <p className="text-2xl font-bold text-indigo-600 mt-1">{countdown}</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
