@@ -4,7 +4,7 @@ import Scoreboard from './Scoreboard';
 import { useDailyChallenge } from '../hooks/useDailyChallenge';
 import { arrayMove, calculateScore, calculateMaxScore } from '../utils/dndUtils';
 import type { University } from '../types/University';
-import { MdOutlineLocalLibrary, MdInsights } from 'react-icons/md';
+import { MdOutlineLocalLibrary, MdInsights, MdOutlineFormatListNumberedRtl, MdPeopleOutline } from 'react-icons/md';
 
 const formatRankingVariable = (key: keyof University | 'studentCount') => {
   switch (key) {
@@ -192,12 +192,12 @@ const RankingList: React.FC = () => {
             <span className="flex items-center justify-center space-x-2">
               {rankingBy === 'ranking' ? (
                 <>
-                  <MdOutlineLocalLibrary className="w-6 h-6 text-academic-indigo" />
+                  <MdOutlineFormatListNumberedRtl className="w-6 h-6 text-academic-indigo" />
                   <b className="text-academic-indigo">{formatRankingVariable(rankingBy)}</b>
                 </>
               ) : rankingBy === 'studentCount' ? (
                 <>
-                  <MdInsights className="w-6 h-6 text-academic-orange" />
+                  <MdPeopleOutline className="w-6 h-6 text-academic-orange" />
                   <b className="text-academic-orange">{formatRankingVariable(rankingBy)}</b>
                 </>
               ) : (
