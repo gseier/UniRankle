@@ -1,38 +1,68 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { PrismaClient } from '@prisma/client'
+// api/saveScore.ts
+import { Prisma, PrismaClient } from '@prisma/client'
+import { DefaultArgs } from '@prisma/client/runtime/library'
 import { parse } from 'cookie'
 import { randomUUID } from 'crypto'
+import type { IncomingMessage, ServerResponse } from 'http'
 
-const prisma = new PrismaClient()
+declare global {
+  // preserve PrismaClient between hot reloads / multiple invocations
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  var __prismaClient: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs> | undefined
+}
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+const prisma: PrismaClient = global.__prismaClient ?? (global.__prismaClient = new PrismaClient())
+
+type Req = IncomingMessage & { body?: unknown; headers: IncomingMessage['headers'] }
+type Res = ServerResponse
+
+function sendJSON(res: Res, status: number, payload: unknown): void {
+  res.statusCode = status
+  res.setHeader('Content-Type', 'application/json')
+  res.end(JSON.stringify(payload))
+}
+
+async function readBody(req: Req): Promise<unknown> {
+  if (req.body) return req.body
+  const contentType = String(req.headers['content-type'] ?? '')
+  return await new Promise((resolve, reject) => {
+    let raw = ''
+    req.on('data', (chunk) => { raw += chunk })
+    req.on('end', () => {
+      if (!raw) return resolve({})
+      try {
+        if (contentType.includes('application/json')) return resolve(JSON.parse(raw))
+        return resolve(raw)
+      } catch (err) {
+        return reject(err)
+      }
+    })
+    req.on('error', reject)
+  })
+}
+
+export default async function handler(req: Req, res: Res): Promise<void> {
   if (req.method !== 'POST') {
-    return res.status(405).json({ success: false, message: 'Method not allowed' })
+    sendJSON(res, 405, { success: false, message: 'Method not allowed' })
+    return
   }
 
   try {
-    // Parse cookies safely
-    const cookies = parse(req.headers.cookie || '')
+    const body = await readBody(req)
+    const score = typeof body === 'object' && body !== null ? (body as Record<string, unknown>)['score'] : undefined
+
+    if (typeof score !== 'number') {
+      sendJSON(res, 400, { success: false, message: 'Invalid score' })
+      return
+    }
+
+    const rawCookie = (req.headers && (req.headers.cookie as string | undefined)) ?? ''
+    const cookies = parse(rawCookie)
     let cookieId = cookies['uid']
 
     if (!cookieId) {
       cookieId = randomUUID()
-      res.setHeader(
-        'Set-Cookie',
-        `uid=${cookieId}; Path=/; Max-Age=31536000; HttpOnly; SameSite=Lax`
-      )
-    }
-
-    // Parse body correctly (Vercel auto-parses JSON)
-    interface RequestBody {
-      score: number;
-    }
-
-    const body: RequestBody = typeof req.body === 'object' ? req.body : JSON.parse(req.body);
-    const score = body.score;
-
-    if (typeof score !== 'number') {
-      return res.status(400).json({ success: false, message: 'Invalid score' })
+      res.setHeader('Set-Cookie', `uid=${cookieId}; Path=/; Max-Age=31536000; HttpOnly; SameSite=Lax`)
     }
 
     const dateKey = new Date().toISOString().slice(0, 10)
@@ -41,10 +71,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       data: { cookieId, dateKey, score },
     })
 
-    return res.status(200).json({ success: true })
-  } catch (err: unknown) {
+    sendJSON(res, 200, { success: true })
+  } catch (err) {
+    // Log full error for Vercel logs
+    // eslint-disable-next-line no-console
     console.error('saveScore error:', err)
-    const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-    return res.status(500).json({ success: false, error: errorMessage })
+    const message = err instanceof Error ? err.message : String(err)
+    sendJSON(res, 500, { success: false, error: message })
   }
 }
