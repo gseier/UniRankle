@@ -132,11 +132,12 @@ const RankingList: React.FC = () => {
 
     // Save order so it stays fixed
     localStorage.setItem('uniOrder', JSON.stringify(universities.map(u => u.id)));
-
+    
+    const localDateKey = new Date().toLocaleDateString('en-CA');
     fetch('/api/saveScore', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ score: finalScore }),
+      body: JSON.stringify({ score: finalScore, dateKey: localDateKey }),
     })
       .then(res => res.json())
       .then(async (data) => {

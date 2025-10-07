@@ -74,8 +74,10 @@ export default async function handler(req: Req, res: Res): Promise<void> {
         previousScore: existing.score,
       })
 
+      
+    const localDateKey = dateKey || new Date().toLocaleDateString('en-CA');
     await prisma.gameScore.create({
-      data: { cookieId, dateKey, score },
+      data: { cookieId, dateKey: localDateKey, score },
     })
 
     sendJSON(res, 200, { success: true })

@@ -20,7 +20,8 @@ export const useDailyChallenge = () => {
   useEffect(() => {
     const fetchDaily = async () => {
       try {
-        const res = await fetch('/api/generateDailyGame')
+        const localDateKey = new Date().toLocaleDateString('en-CA'); // e.g. 2025-10-08
+        const res = await fetch(`/api/generateDailyGame?dateKey=${localDateKey}`);
         const data: DailyGameResponse = await res.json()
 
         // Convert rankingBy enum
