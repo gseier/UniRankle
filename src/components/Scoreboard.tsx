@@ -60,7 +60,7 @@ const Scoreboard: React.FC<ScoreboardProps> = ({ score, maxPossibleScore, isSubm
           ${
             isSubmitted
               ? 'bg-gray-400 cursor-not-allowed shadow-inner'
-              : 'bg-indigo-600 text-white shadow-2xl hover:bg-indigo-700 hover:shadow-3xl active:scale-[0.99]'
+              : 'bg-indigo-600 text-white shadow-2xl hover:bg-indigo-700 hover:shadow-3xl active:scale-[0.99] cursor-pointer'
           }
         `}
       >

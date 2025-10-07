@@ -186,7 +186,7 @@ const RankingList: React.FC = () => {
             onClick={() => setShowPopup(true)}
             className="absolute top-0 right-0 text-indigo-600 hover:text-indigo-800 transition"
             title="View your stats"
-         >
+          >
             <MdInsights className="w-8 h-8" />
           </button>
           <p className="text-gray-700 mt-4 max-w-xl mx-auto text-lg border-t pt-4">
@@ -210,9 +210,19 @@ const RankingList: React.FC = () => {
           </div>
 
           <div className="md:col-span-2">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-700 border-b pb-2 flex items-center">
-              <MdOutlineLocalLibrary className="w-7 h-7 mr-2 text-academic-indigo" />
-              Your Ranking
+            <h2 className="text-2xl font-semibold mb-4 text-gray-700 border-b pb-2 flex items-center justify-between">
+              <div className="flex items-center">
+                <MdOutlineLocalLibrary className="w-7 h-7 mr-2 text-academic-indigo" />
+                Your Ranking
+              </div>
+
+              <button
+                onClick={() => setShowPopup(true)}
+                title="View your stats"
+                className="flex items-center justify-center w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 hover:bg-indigo-200 transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg active:scale-95"
+              >
+                <MdInsights className="w-6 h-6" />
+              </button>
             </h2>
             <div
               className="space-y-4 p-4 bg-white rounded-2xl shadow-2xl border border-indigo-100"
@@ -245,56 +255,52 @@ const RankingList: React.FC = () => {
         </main>
       </div>
 
-      {/* Popup after submission */}
       {showPopup && (
-  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-    <div className="bg-white rounded-2xl p-8 text-center shadow-2xl w-11/12 max-w-md animate-fadeIn">
-      {alreadyPlayed || isSubmitted ? (
-        <>
-          <h2 className="text-3xl font-bold text-indigo-700 mb-3">
-            You’ve completed today’s challenge!
-          </h2>
-          <p className="text-gray-700 text-lg mb-2">
-            Your score: <b>{previousScore ?? score}</b>
-          </p>
-          <p className="text-gray-600 mb-4">
-            Average score today: <b>{avgScore ?? '...'}</b>
-          </p>
-        </>
-      ) : (
-        <>
-          <h2 className="text-3xl font-bold text-indigo-700 mb-3">
-            You haven’t played today’s challenge yet!
-          </h2>
-          <p className="text-gray-600 mb-4">
-            Come back once you’ve completed the ranking to see your daily stats.
-          </p>
-        </>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-8 text-center shadow-2xl w-11/12 max-w-md animate-fadeIn">
+            {alreadyPlayed || isSubmitted ? (
+              <>
+                <h2 className="text-3xl font-bold text-indigo-700 mb-3">
+                  You’ve completed today’s challenge!
+                </h2>
+                <p className="text-gray-700 text-lg mb-2">
+                  Your score: <b>{previousScore ?? score}</b>
+                </p>
+                <p className="text-gray-600 mb-4">
+                  Average score today: <b>{avgScore ?? '...'}</b>
+                </p>
+              </>
+            ) : (
+              <>
+                <h2 className="text-3xl font-bold text-indigo-700 mb-3">
+                  You haven’t played today’s challenge yet!
+                </h2>
+                <p className="text-gray-600 mb-4">
+                  Come back once you’ve completed the ranking to see your daily stats.
+                </p>
+              </>
+            )}
+
+            {userAvg !== null && (
+              <p className="text-gray-700 text-md mb-4">
+                Your all-time average score ({totalGames} games): <b>{userAvg}</b>
+              </p>
+            )}
+
+            <div className="bg-indigo-50 border border-indigo-200 px-6 py-3 rounded-xl shadow-md mb-6">
+              <p className="text-gray-700 font-medium">Next challenge starts in:</p>
+              <p className="text-2xl font-bold text-indigo-600 mt-1">{countdown}</p>
+            </div>
+
+            <button
+              onClick={() => setShowPopup(false)}
+              className="mt-2 px-6 py-3 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition cursor-pointer"
+            >
+              Close
+            </button>
+          </div>
+        </div>
       )}
-
-      {/* Lifetime average if exists */}
-      {userAvg !== null && (
-        <p className="text-gray-700 text-md mb-4">
-          Your all-time average score ({totalGames} games):{' '}
-          <b>{userAvg}</b>
-        </p>
-      )}
-
-      {/* Countdown */}
-      <div className="bg-indigo-50 border border-indigo-200 px-6 py-3 rounded-xl shadow-md mb-6">
-        <p className="text-gray-700 font-medium">Next challenge starts in:</p>
-        <p className="text-2xl font-bold text-indigo-600 mt-1">{countdown}</p>
-      </div>
-
-      <button
-        onClick={() => setShowPopup(false)}
-        className="mt-2 px-6 py-3 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition"
-      >
-        Close
-      </button>
-    </div>
-  </div>
-)}
     </div>
   );
 };
