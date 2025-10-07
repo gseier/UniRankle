@@ -238,5 +238,165 @@
         "studentCount": 54000,
         "country": "Australia",
         "imageUrl": "/images/melbourne.jpg"
+    },
+    {
+        "id": "u31",
+        "name": "Washington University (WUSTL)",
+        "ranking": 31,
+        "studentCount": 15818,
+        "country": "United States",
+        "imageUrl": "/images/wustl.jpg"
+    },
+    {
+        "id": "u32",
+        "name": "New York University",
+        "ranking": 32,
+        "studentCount": 58000,
+        "country": "United States",
+        "imageUrl": "/images/nyu.jpg"
+    },
+    {
+        "id": "u33",
+        "name": "University of Amsterdam",
+        "ranking": 33,
+        "studentCount": 31000,
+        "country": "Netherlands",
+        "imageUrl": "/images/amsterdam.jpg"
+    },
+    {
+        "id": "u34",
+        "name": "University of New South Wales Sydney",
+        "ranking": 34,
+        "studentCount": 63000,
+        "country": "Australia",
+        "imageUrl": "/images/unsw.jpg"
+    },
+    {
+        "id": "u35",
+        "name": "ETH Zurich",
+        "ranking": 35,
+        "studentCount": 24000,
+        "country": "Switzerland",
+        "imageUrl": "/images/ethzurich.jpg"
+    },
+    {
+        "id": "u36",
+        "name": "King's College London",
+        "ranking": 36,
+        "studentCount": 33000,
+        "country": "United Kingdom",
+        "imageUrl": "/images/kcl.jpg"
+    },
+    {
+        "id": "u37",
+        "name": "Chinese University of Hong Kong",
+        "ranking": 37,
+        "studentCount": 20000,
+        "country": "Hong Kong",
+        "imageUrl": "/images/cuhk.jpg"
+    },
+    {
+        "id": "u38",
+        "name": "Monash University",
+        "ranking": 38,
+        "studentCount": 86000,
+        "country": "Australia",
+        "imageUrl": "/images/monash.jpg"
+    },
+    {
+        "id": "u39",
+        "name": "University of Edinburgh",
+        "ranking": 39,
+        "studentCount": 45000,
+        "country": "United Kingdom",
+        "imageUrl": "/images/edinburgh.jpg"
+    },
+    {
+        "id": "u40",
+        "name": "Icahn School of Medicine at Mount Sinai",
+        "ranking": 40,
+        "studentCount": 1400,
+        "country": "United States",
+        "imageUrl": "/images/mountsinai.jpg"
+    },
+    {
+        "id": "u41",
+        "name": "University of British Columbia",
+        "ranking": 41,
+        "studentCount": 66700,
+        "country": "Canada",
+        "imageUrl": "/images/ubc.jpg"
+    },
+    {
+        "id": "u42",
+        "name": "University of Copenhagen",
+        "ranking": 42,
+        "studentCount": 37000,
+        "country": "Denmark",
+        "imageUrl": "/images/copenhagen.jpg"
+    },
+    {
+        "id": "u43",
+        "name": "University of Queensland",
+        "ranking": 43,
+        "studentCount": 55000,
+        "country": "Australia",
+        "imageUrl": "/images/queensland.jpg"
+    },
+    {
+        "id": "u44",
+        "name": "University of Hong Kong",
+        "ranking": 44,
+        "studentCount": 30000,
+        "country": "Hong Kong",
+        "imageUrl": "/images/hku.jpg"
+    },
+    {
+        "id": "u45",
+        "name": "Zhejiang University",
+        "ranking": 45,
+        "studentCount": 54000,
+        "country": "China",
+        "imageUrl": "/images/zhejiang.jpg"
+    },
+    {
+        "id": "u46",
+        "name": "Shanghai Jiao Tong University",
+        "ranking": 46,
+        "studentCount": 40000,
+        "country": "China",
+        "imageUrl": "/images/shanghai.jpg"
+    },
+    {
+        "id": "u47",
+        "name": "Humboldt University of Berlin",
+        "ranking": 47,
+        "studentCount": 32000,
+        "country": "Germany",
+        "imageUrl": "/images/humboldt.jpg"
+    },
+    {
+        "id": "u48",
+        "name": "Université Paris Cité",
+        "ranking": 48,
+        "studentCount": 64000,
+        "country": "France",
+        "imageUrl": "/images/pariscite.jpg"
+    },
+    {
+        "id": "u49",
+        "name": "Utrecht University",
+        "ranking": 49,
+        "studentCount": 31000,
+        "country": "Netherlands",
+        "imageUrl": "/images/utrecht.jpg"
+    },
+    {
+        "id": "u50",
+        "name": "KU Leuven",
+        "ranking": 50,
+        "studentCount": 58000,
+        "country": "Belgium",
+        "imageUrl": "/images/kuleuven.jpg"
     }
 ]
