@@ -1,4 +1,3 @@
-// api/saveScore.ts
 import { Prisma, PrismaClient } from '@prisma/client'
 import { DefaultArgs } from '@prisma/client/runtime/library'
 import { parse } from 'cookie'
@@ -6,8 +5,6 @@ import { randomUUID } from 'crypto'
 import type { IncomingMessage, ServerResponse } from 'http'
 
 declare global {
-  // preserve PrismaClient between hot reloads / multiple invocations
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   var __prismaClient: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs> | undefined
 }
 
@@ -73,8 +70,6 @@ export default async function handler(req: Req, res: Res): Promise<void> {
 
     sendJSON(res, 200, { success: true })
   } catch (err) {
-    // Log full error for Vercel logs
-    // eslint-disable-next-line no-console
     console.error('saveScore error:', err)
     const message = err instanceof Error ? err.message : String(err)
     sendJSON(res, 500, { success: false, error: message })
