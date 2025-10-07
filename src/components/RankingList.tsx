@@ -282,9 +282,14 @@ const RankingList: React.FC = () => {
               </>
             )}
 
-            {userAvg !== null && (
+            {userAvg !== null && totalGames !== 1 && (
               <p className="text-gray-700 text-md mb-4">
                 Your all-time average score ({totalGames} games): <b>{userAvg}</b>
+              </p>
+            )}
+            {userAvg !== null && totalGames === 1 && (
+              <p className="text-gray-700 text-md mb-4">
+                Your all-time average score ({totalGames} game): <b>{userAvg}</b>
               </p>
             )}
 
