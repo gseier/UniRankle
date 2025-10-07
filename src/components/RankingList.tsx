@@ -189,7 +189,21 @@ const RankingList: React.FC = () => {
             <br />
             Rank these five universities from 1 (Highest) to 5 (Lowest) based on
             <br />
-            <b>{formatRankingVariable(rankingBy)}</b>
+            <span className="flex items-center justify-center space-x-2">
+              {rankingBy === 'ranking' ? (
+                <>
+                  <MdOutlineLocalLibrary className="w-6 h-6 text-academic-indigo" />
+                  <b className="text-academic-indigo">{formatRankingVariable(rankingBy)}</b>
+                </>
+              ) : rankingBy === 'studentCount' ? (
+                <>
+                  <MdInsights className="w-6 h-6 text-academic-orange" />
+                  <b className="text-academic-orange">{formatRankingVariable(rankingBy)}</b>
+                </>
+              ) : (
+                <b>{formatRankingVariable(rankingBy)}</b>
+              )}
+            </span>
           </p>
           <link href="/src/style.css" rel="stylesheet"></link>
         </header>
