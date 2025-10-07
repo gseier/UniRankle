@@ -64,6 +64,16 @@ export default async function handler(req: Req, res: Res): Promise<void> {
 
     const dateKey = new Date().toISOString().slice(0, 10)
 
+    const existing = await prisma.gameScore.findFirst({
+      where: { cookieId, dateKey },
+    })
+    if (existing)
+      return sendJSON(res, 200, {
+        success: false,
+        alreadyPlayed: true,
+        previousScore: existing.score,
+      })
+
     await prisma.gameScore.create({
       data: { cookieId, dateKey, score },
     })
