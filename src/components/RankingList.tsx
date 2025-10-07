@@ -183,13 +183,7 @@ const RankingList: React.FC = () => {
           >
             UniRankle
           </h1>
-          <button
-            onClick={() => setShowPopup(true)}
-            className="absolute top-0 right-0 text-indigo-600 hover:text-indigo-800 transition"
-            title="View your stats"
-          >
-            <MdInsights className="w-8 h-8" />
-          </button>
+          
           <p className="text-gray-700 mt-4 max-w-xl mx-auto text-lg border-t pt-4">
             Today's challenge:
             <br />
