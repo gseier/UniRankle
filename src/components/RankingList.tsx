@@ -4,12 +4,14 @@ import Scoreboard from './Scoreboard';
 import { useDailyChallenge } from '../hooks/useDailyChallenge';
 import { arrayMove, calculateScore, calculateMaxScore } from '../utils/dndUtils';
 import type { University } from '../types/University';
-import { MdOutlineLocalLibrary, MdInsights, MdOutlineFormatListNumberedRtl, MdPeopleOutline } from 'react-icons/md';
+import { MdOutlineLocalLibrary, MdInsights, MdOutlineFormatListNumberedRtl, MdPeopleOutline, MdOutlineMap, MdOutlineImportContacts } from 'react-icons/md';
 
 const formatRankingVariable = (key: keyof University | 'studentCount') => {
   switch (key) {
     case 'ranking': return 'Global Rank';
     case 'studentCount': return 'Student Count';
+    case 'yearFounded': return 'Year Founded';
+    case 'campusArea': return 'Campus Area (sq km)';
     default: return 'Unknown Metric';
   }
 };
@@ -200,6 +202,16 @@ const RankingList: React.FC = () => {
                 <>
                   <MdPeopleOutline className="w-6 h-6 text-academic-orange" />
                   <b className="text-academic-orange">{formatRankingVariable(rankingBy)}</b>
+                </>
+              ) : rankingBy === 'yearFounded' ? (
+                <>
+                  <MdOutlineImportContacts className="w-6 h-6 text-academic-orange" />
+                  <b className="text-academic-orange">{formatRankingVariable(rankingBy)}</b>
+                </>
+              ) : rankingBy === 'campusArea' ? (
+                <>
+                  <MdOutlineMap className="w-6 h-6 text-academic-green" />
+                  <b className="text-academic-green">{formatRankingVariable(rankingBy)}</b>
                 </>
               ) : (
                 <b>{formatRankingVariable(rankingBy)}</b>

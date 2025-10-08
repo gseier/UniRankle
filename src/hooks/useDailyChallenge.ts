@@ -4,7 +4,7 @@ import type { University } from '../types/University'
 interface DailyGameResponse {
   id: string
   dateKey: string
-  rankingBy: 'RANKING' | 'STUDENT_COUNT'
+  rankingBy: 'RANKING' | 'STUDENT_COUNT' | 'YEAR_FOUNDED' | 'CAMPUS_AREA'
   entries: {
     orderIndex: number
     university: University
@@ -14,7 +14,7 @@ interface DailyGameResponse {
 export const useDailyChallenge = () => {
   const [dailyUniversities, setDailyUniversities] = useState<University[]>([])
   const [correctOrder, setCorrectOrder] = useState<University[]>([])
-  const [rankingBy, setRankingBy] = useState<'ranking' | 'studentCount'>('ranking')
+  const [rankingBy, setRankingBy] = useState<'ranking' | 'studentCount' | 'yearFounded' | 'campusArea'>('ranking')
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -25,17 +25,37 @@ export const useDailyChallenge = () => {
         const data: DailyGameResponse = await res.json()
 
         // Convert rankingBy enum
-        const variable = data.rankingBy === 'STUDENT_COUNT' ? 'studentCount' : 'ranking'
+        let variable: 'ranking' | 'studentCount' | 'yearFounded' | 'campusArea';
+        switch (data.rankingBy) {
+          case 'STUDENT_COUNT':
+            variable = 'studentCount';
+            break;
+          case 'YEAR_FOUNDED':
+            variable = 'yearFounded';
+            break;
+          case 'CAMPUS_AREA':
+            variable = 'campusArea';
+            break;
+          default:
+            variable = 'ranking';
+        }
 
         // Extract universities
         const unis = data.entries.map(e => e.university)
 
         // Determine correct order
-        const sorted = [...unis].sort((a, b) =>
-          variable === 'studentCount'
-            ? b.studentCount - a.studentCount
-            : a.ranking - b.ranking
-        )
+        const sorted = [...unis].sort((a, b) => {
+          switch (variable) {
+            case 'studentCount':
+              return b.studentCount - a.studentCount;
+            case 'yearFounded':
+              return b.yearFounded - a.yearFounded;
+            case 'campusArea':
+              return b.campusArea - a.campusArea;
+            default:
+              return a.ranking - b.ranking;
+          }
+        })
 
         setDailyUniversities(unis.sort(() => 0.5 - Math.random())) // shuffle display
         setCorrectOrder(sorted)

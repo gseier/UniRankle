@@ -15,6 +15,8 @@ const formatValueDisplay = (key: RankVariable, value: number | string): string =
         // Format large numbers for better display on the card
         if (value >= 1000000) return (value / 1000000).toFixed(1) + 'M';
         if (value >= 1000) return (value / 1000).toFixed(0) + 'K';
+    } else if (key === 'campusArea' && typeof value === 'number') {
+        return value.toFixed(2) + ' sq km';
     }
     return String(value);
 }
@@ -29,9 +31,19 @@ const UniversityCard: React.FC<UniversityCardProps> = ({
   const fallbackText = university.name.split(' ').map(n => n[0]).join('').substring(0, 3).toUpperCase();
   const fallbackImageUrl = `https://placehold.co/300x120/3B82F6/FFFFFF?text=${fallbackText}`;
 
-  const variableLabel = rankingBy === 'ranking' ? 'Global Rank' : 'Student Count';
+  const variableLabel = 
+    rankingBy === 'ranking' ? 'Global Rank' : 
+    rankingBy === 'studentCount' ? 'Student Count' : 
+    rankingBy === 'yearFounded' ? 'Founding Year' : 
+    rankingBy === 'campusArea' ? 'Campus Area' : 
+    'Value';
   const displayValue = correctValue !== undefined ? formatValueDisplay(rankingBy, correctValue) : '';
-  const valueColor = rankingBy === 'ranking' ? 'text-yellow-300' : 'text-green-300';
+  const valueColor = 
+    rankingBy === 'ranking' ? 'text-yellow-300' : 
+    rankingBy === 'studentCount' ? 'text-blue-300' : 
+    rankingBy === 'yearFounded' ? 'text-purple-300' : 
+    rankingBy === 'campusArea' ? 'text-red-300' : 
+    'text-green-300';
 
   return (
     // Card Container

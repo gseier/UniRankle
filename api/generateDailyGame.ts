@@ -34,8 +34,13 @@ export default async function handler(req: Request, res: Response) {
 
     // 4️⃣ If missing, create a new one
     if (!dailyGame || dailyGame.entries.length === 0) {
-      const rankingBy =
-        Math.random() > 0.5 ? RankingBy.RANKING : RankingBy.STUDENT_COUNT;
+      const rankingBy = (() => {
+        const random = Math.random();
+        if (random < 0.25) return RankingBy.RANKING;
+        if (random < 0.5) return RankingBy.STUDENT_COUNT;
+        if (random < 0.75) return RankingBy.YEAR_FOUNDED;
+        return RankingBy.CAMPUS_AREA;
+      })();
 
       const universities = await prisma.university.findMany();
       const shuffled = universities.sort(() => 0.5 - Math.random()).slice(0, 5);

@@ -18,7 +18,9 @@ async function main() {
     studentCount: uni.studentCount,
     country: uni.country,
     imageUrl: uni.imageUrl,
-    externalId: uni.id // Match the JSON id to the externalId
+    externalId: uni.id, // Match the JSON id to the externalId
+    yearFounded: uni.yearFounded,
+    campusArea: uni.campusArea
   }));
 
   await prisma.university.createMany({

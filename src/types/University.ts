@@ -6,4 +6,6 @@ export interface University {
   studentCount: number; // For student count data
   country: string; // Country where the university is located
   imageUrl: string;
+  yearFounded: number;
+  campusArea: number; // in square kilometers
 }

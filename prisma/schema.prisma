@@ -18,6 +18,8 @@ model University {
   imageUrl     String
   ranking      Int
   updatedAt    DateTime              @updatedAt
+  yearFounded  Int
+  campusArea   Float                 // in square kilometers
   dailyEntries DailyGameUniversity[]
 }
 
@@ -47,6 +49,8 @@ model DailyGameUniversity {
 enum RankingBy {
   RANKING
   STUDENT_COUNT
+  YEAR_FOUNDED
+  CAMPUS_AREA
 }
 
 model GameScore {

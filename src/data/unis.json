@@ -5,7 +5,9 @@
         "ranking": 1,
         "studentCount": 22608,
         "country": "United States",
-        "imageUrl": "/images/harvard.jpg"
+        "imageUrl": "/images/harvard.jpg",
+        "yearFounded": 1636,
+        "campusArea": 22.08
     },
     {
         "id": "u2",
@@ -13,7 +15,9 @@
         "ranking": 2,
         "studentCount": 11549,
         "country": "United States",
-        "imageUrl": "/images/mit.jpg"
+        "imageUrl": "/images/mit.jpg",
+        "yearFounded": 1861,
+        "campusArea": 0.68
     },
     {
         "id": "u3",
@@ -21,7 +25,9 @@
         "ranking": 3,
         "studentCount": 17422,
         "country": "United States",
-        "imageUrl": "/images/stanford.jpg"
+        "imageUrl": "/images/stanford.jpg",
+        "yearFounded": 1885,
+        "campusArea": 33.1
     },
     {
         "id": "u4",
@@ -29,7 +35,9 @@
         "ranking": 4,
         "studentCount": 26000,
         "country": "United Kingdom",
-        "imageUrl": "/images/oxford.jpg"
+        "imageUrl": "/images/oxford.jpg",
+        "yearFounded": 1096,
+        "campusArea": 5.37
     },
     {
         "id": "u5",
@@ -37,7 +45,9 @@
         "ranking": 5,
         "studentCount": 21140,
         "country": "United Kingdom",
-        "imageUrl": "/images/cambridge.jpg"
+        "imageUrl": "/images/cambridge.jpg",
+        "yearFounded": 1209,
+        "campusArea": 6.17
     },
     {
         "id": "u6",
@@ -45,7 +55,9 @@
         "ranking": 6,
         "studentCount": 42565,
         "country": "United States",
-        "imageUrl": "/images/berkeley.jpg"
+        "imageUrl": "/images/berkeley.jpg",
+        "yearFounded": 1868,
+        "campusArea": 4.85
     },
     {
         "id": "u7",
@@ -53,7 +65,9 @@
         "ranking": 7,
         "studentCount": 44910,
         "country": "United Kingdom",
-        "imageUrl": "/images/ucl.jpg"
+        "imageUrl": "/images/ucl.jpg",
+        "yearFounded": 1826,
+        "campusArea": 0.63
     },
     {
         "id": "u8",
@@ -61,7 +75,9 @@
         "ranking": 8,
         "studentCount": 49524,
         "country": "United States",
-        "imageUrl": "/images/washington.jpg"
+        "imageUrl": "/images/washington.jpg",
+        "yearFounded": 1861,
+        "campusArea": 3.3
     },
     {
         "id": "u9",
@@ -69,7 +85,9 @@
         "ranking": 9,
         "studentCount": 15600,
         "country": "United States",
-        "imageUrl": "/images/yale.jpg"
+        "imageUrl": "/images/yale.jpg",
+        "yearFounded": 1701,
+        "campusArea": 4.48
     },
     {
         "id": "u10",
@@ -77,7 +95,9 @@
         "ranking": 10,
         "studentCount": 30580,
         "country": "United States",
-        "imageUrl": "/images/columbia.jpg"
+        "imageUrl": "/images/columbia.jpg",
+        "yearFounded": 1754,
+        "campusArea": 1.6
     },
     {
         "id": "u11",
@@ -85,7 +105,9 @@
         "ranking": 11,
         "studentCount": 21065,
         "country": "United Kingdom",
-        "imageUrl": "/images/imperial.jpg"
+        "imageUrl": "/images/imperial.jpg",
+        "yearFounded": 1907,
+        "campusArea": 0.35
     },
     {
         "id": "u12",
@@ -93,7 +115,9 @@
         "ranking": 12,
         "studentCount": 36000,
         "country": "China",
-        "imageUrl": "/images/tsinghua.jpg"
+        "imageUrl": "/images/tsinghua.jpg",
+        "yearFounded": 1911,
+        "campusArea": 4.83
     },
     {
         "id": "u13",
@@ -101,7 +125,9 @@
         "ranking": 13,
         "studentCount": 44542,
         "country": "United States",
-        "imageUrl": "/images/ucla.jpg"
+        "imageUrl": "/images/ucla.jpg",
+        "yearFounded": 1919,
+        "campusArea": 1.7
     },
     {
         "id": "u14",
@@ -109,7 +135,9 @@
         "ranking": 14,
         "studentCount": 21275,
         "country": "United States",
-        "imageUrl": "/images/johnshopkins.jpg"
+        "imageUrl": "/images/johnshopkins.jpg",
+        "yearFounded": 1876,
+        "campusArea": 0.57
     },
     {
         "id": "u15",
@@ -117,7 +145,9 @@
         "ranking": 15,
         "studentCount": 22422,
         "country": "United States",
-        "imageUrl": "/images/upenn.jpg"
+        "imageUrl": "/images/upenn.jpg",
+        "yearFounded": 1740,
+        "campusArea": 1.24
     },
     {
         "id": "u16",
@@ -125,7 +155,9 @@
         "ranking": 16,
         "studentCount": 18978,
         "country": "United States",
-        "imageUrl": "/images/cornell.jpg"
+        "imageUrl": "/images/cornell.jpg",
+        "yearFounded": 1865,
+        "campusArea": 9.31
     },
     {
         "id": "u17",
@@ -133,7 +165,9 @@
         "ranking": 17,
         "studentCount": 8478,
         "country": "United States",
-        "imageUrl": "/images/princeton.jpg"
+        "imageUrl": "/images/princeton.jpg",
+        "yearFounded": 1746,
+        "campusArea": 2.43
     },
     {
         "id": "u18",
@@ -141,7 +175,9 @@
         "ranking": 18,
         "studentCount": 3000,
         "country": "United States",
-        "imageUrl": "/images/ucsf.jpg"
+        "imageUrl": "/images/ucsf.jpg",
+        "yearFounded": 1864,
+        "campusArea": 0.43
     },
     {
         "id": "u19",
@@ -149,7 +185,9 @@
         "ranking": 19,
         "studentCount": 99700,
         "country": "Canada",
-        "imageUrl": "/images/toronto.jpg"
+        "imageUrl": "/images/toronto.jpg",
+        "yearFounded": 1827,
+        "campusArea": 0.71
     },
     {
         "id": "u20",
@@ -157,7 +195,9 @@
         "ranking": 20,
         "studentCount": 51568,
         "country": "Singapore",
-        "imageUrl": "/images/nus.jpg"
+        "imageUrl": "/images/nus.jpg",
+        "yearFounded": 1905,
+        "campusArea": 1.5
     },
     {
         "id": "u21",
@@ -165,7 +205,9 @@
         "ranking": 21,
         "studentCount": 35955,
         "country": "United States",
-        "imageUrl": "/images/ucsd.jpg"
+        "imageUrl": "/images/ucsd.jpg",
+        "yearFounded": 1960,
+        "campusArea": 8.66
     },
     {
         "id": "u22",
@@ -173,7 +215,9 @@
         "ranking": 22,
         "studentCount": 48116,
         "country": "United States",
-        "imageUrl": "/images/michigan.jpg"
+        "imageUrl": "/images/michigan.jpg",
+        "yearFounded": 1817,
+        "campusArea": 13
     },
     {
         "id": "u23",
@@ -181,7 +225,9 @@
         "ranking": 23,
         "studentCount": 2237,
         "country": "United States",
-        "imageUrl": "/images/caltech.jpg"
+        "imageUrl": "/images/caltech.jpg",
+        "yearFounded": 1891,
+        "campusArea": 0.5
     },
     {
         "id": "u24",
@@ -189,7 +235,9 @@
         "ranking": 24,
         "studentCount": 22327,
         "country": "United States",
-        "imageUrl": "/images/northwestern.jpg"
+        "imageUrl": "/images/northwestern.jpg",
+        "yearFounded": 1851,
+        "campusArea": 0.97
     },
     {
         "id": "u25",
@@ -197,7 +245,9 @@
         "ranking": 25,
         "studentCount": 44000,
         "country": "China",
-        "imageUrl": "/images/peking.jpg"
+        "imageUrl": "/images/peking.jpg",
+        "yearFounded": 1898,
+        "campusArea": 2.74
     },
     {
         "id": "u26",
@@ -205,7 +255,9 @@
         "ranking": 26,
         "studentCount": 17902,
         "country": "United States",
-        "imageUrl": "/images/chicago.jpg"
+        "imageUrl": "/images/chicago.jpg",
+        "yearFounded": 1890,
+        "campusArea": 0.87
     },
     {
         "id": "u27",
@@ -213,7 +265,9 @@
         "ranking": 27,
         "studentCount": 16606,
         "country": "United States",
-        "imageUrl": "/images/duke.jpg"
+        "imageUrl": "/images/duke.jpg",
+        "yearFounded": 1838,
+        "campusArea": 35
     },
     {
         "id": "u28",
@@ -221,7 +275,9 @@
         "ranking": 28,
         "studentCount": 33600,
         "country": "Singapore",
-        "imageUrl": "/images/ntu.jpg"
+        "imageUrl": "/images/ntu.jpg",
+        "yearFounded": 1981,
+        "campusArea": 2
     },
     {
         "id": "u29",
@@ -229,7 +285,9 @@
         "ranking": 29,
         "studentCount": 73000,
         "country": "Australia",
-        "imageUrl": "/images/sydney.jpg"
+        "imageUrl": "/images/sydney.jpg",
+        "yearFounded": 1850,
+        "campusArea": 0.68
     },
     {
         "id": "u30",
@@ -237,7 +295,9 @@
         "ranking": 30,
         "studentCount": 54000,
         "country": "Australia",
-        "imageUrl": "/images/melbourne.jpg"
+        "imageUrl": "/images/melbourne.jpg",
+        "yearFounded": 1853,
+        "campusArea": 0.2
     },
     {
         "id": "u31",
@@ -245,7 +305,9 @@
         "ranking": 31,
         "studentCount": 15818,
         "country": "United States",
-        "imageUrl": "/images/wustl.jpg"
+        "imageUrl": "/images/wustl.jpg",
+        "yearFounded": 1853,
+        "campusArea": 0.68
     },
     {
         "id": "u32",
@@ -253,7 +315,9 @@
         "ranking": 32,
         "studentCount": 58000,
         "country": "United States",
-        "imageUrl": "/images/nyu.jpg"
+        "imageUrl": "/images/nyu.jpg",
+        "yearFounded": 1831,
+        "campusArea": 0.93
     },
     {
         "id": "u33",
@@ -261,7 +325,9 @@
         "ranking": 33,
         "studentCount": 31000,
         "country": "Netherlands",
-        "imageUrl": "/images/amsterdam.jpg"
+        "imageUrl": "/images/amsterdam.jpg",
+        "yearFounded": 1632,
+        "campusArea": 0.85
     },
     {
         "id": "u34",
@@ -269,7 +335,9 @@
         "ranking": 34,
         "studentCount": 63000,
         "country": "Australia",
-        "imageUrl": "/images/unsw.jpg"
+        "imageUrl": "/images/unsw.jpg",
+        "yearFounded": 1949,
+        "campusArea": 0.38
     },
     {
         "id": "u35",
@@ -277,7 +345,9 @@
         "ranking": 35,
         "studentCount": 24000,
         "country": "Switzerland",
-        "imageUrl": "/images/ethzurich.jpg"
+        "imageUrl": "/images/ethzurich.jpg",
+        "yearFounded": 1855,
+        "campusArea": 0.52
     },
     {
         "id": "u36",
@@ -285,7 +355,9 @@
         "ranking": 36,
         "studentCount": 33000,
         "country": "United Kingdom",
-        "imageUrl": "/images/kcl.jpg"
+        "imageUrl": "/images/kcl.jpg",
+        "yearFounded": 1829,
+        "campusArea": 0.1
     },
     {
         "id": "u37",
@@ -293,7 +365,9 @@
         "ranking": 37,
         "studentCount": 20000,
         "country": "Hong Kong",
-        "imageUrl": "/images/cuhk.jpg"
+        "imageUrl": "/images/cuhk.jpg",
+        "yearFounded": 1963,
+        "campusArea": 1.37
     },
     {
         "id": "u38",
@@ -301,7 +375,9 @@
         "ranking": 38,
         "studentCount": 86000,
         "country": "Australia",
-        "imageUrl": "/images/monash.jpg"
+        "imageUrl": "/images/monash.jpg",
+        "yearFounded": 1958,
+        "campusArea": 1.1
     },
     {
         "id": "u39",
@@ -309,7 +385,9 @@
         "ranking": 39,
         "studentCount": 45000,
         "country": "United Kingdom",
-        "imageUrl": "/images/edinburgh.jpg"
+        "imageUrl": "/images/edinburgh.jpg",
+        "yearFounded": 1583,
+        "campusArea": 3.3
     },
     {
         "id": "u40",
@@ -317,7 +395,9 @@
         "ranking": 40,
         "studentCount": 1400,
         "country": "United States",
-        "imageUrl": "/images/mountsinai.jpg"
+        "imageUrl": "/images/mountsinai.jpg",
+        "yearFounded": 1963,
+        "campusArea": 0.04
     },
     {
         "id": "u41",
@@ -325,7 +405,9 @@
         "ranking": 41,
         "studentCount": 66700,
         "country": "Canada",
-        "imageUrl": "/images/ubc.jpg"
+        "imageUrl": "/images/ubc.jpg",
+        "yearFounded": 1908,
+        "campusArea": 4.02
     },
     {
         "id": "u42",
@@ -333,7 +415,9 @@
         "ranking": 42,
         "studentCount": 37000,
         "country": "Denmark",
-        "imageUrl": "/images/copenhagen.jpg"
+        "imageUrl": "/images/copenhagen.jpg",
+        "yearFounded": 1479,
+        "campusArea": 0.8
     },
     {
         "id": "u43",
@@ -341,7 +425,9 @@
         "ranking": 43,
         "studentCount": 55000,
         "country": "Australia",
-        "imageUrl": "/images/queensland.jpg"
+        "imageUrl": "/images/queensland.jpg",
+        "yearFounded": 1909,
+        "campusArea": 11.4
     },
     {
         "id": "u44",
@@ -349,7 +435,9 @@
         "ranking": 44,
         "studentCount": 30000,
         "country": "Hong Kong",
-        "imageUrl": "/images/hku.jpg"
+        "imageUrl": "/images/hku.jpg",
+        "yearFounded": 1911,
+        "campusArea": 0.5
     },
     {
         "id": "u45",
@@ -357,7 +445,9 @@
         "ranking": 45,
         "studentCount": 54000,
         "country": "China",
-        "imageUrl": "/images/zhejiang.jpg"
+        "imageUrl": "/images/zhejiang.jpg",
+        "yearFounded": 1897,
+        "campusArea": 6.11
     },
     {
         "id": "u46",
@@ -365,7 +455,9 @@
         "ranking": 46,
         "studentCount": 40000,
         "country": "China",
-        "imageUrl": "/images/shanghai.jpg"
+        "imageUrl": "/images/shanghai.jpg",
+        "yearFounded": 1896,
+        "campusArea": 3.2
     },
     {
         "id": "u47",
@@ -373,7 +465,9 @@
         "ranking": 47,
         "studentCount": 32000,
         "country": "Germany",
-        "imageUrl": "/images/humboldt.jpg"
+        "imageUrl": "/images/humboldt.jpg",
+        "yearFounded": 1810,
+        "campusArea": 0.2
     },
     {
         "id": "u48",
@@ -381,7 +475,9 @@
         "ranking": 48,
         "studentCount": 64000,
         "country": "France",
-        "imageUrl": "/images/pariscite.jpg"
+        "imageUrl": "/images/pariscite.jpg",
+        "yearFounded": 2019,
+        "campusArea": 0.25
     },
     {
         "id": "u49",
@@ -389,7 +485,9 @@
         "ranking": 49,
         "studentCount": 31000,
         "country": "Netherlands",
-        "imageUrl": "/images/utrecht.jpg"
+        "imageUrl": "/images/utrecht.jpg",
+        "yearFounded": 1636,
+        "campusArea": 2.5
     },
     {
         "id": "u50",
@@ -397,6 +495,508 @@
         "ranking": 50,
         "studentCount": 58000,
         "country": "Belgium",
-        "imageUrl": "/images/kuleuven.jpg"
-    }
+        "imageUrl": "/images/kuleuven.jpg",
+        "yearFounded": 1425,
+        "campusArea": 1.2
+    },
+    {
+        "id": "u51",
+        "name": "University of North Carolina Chapel Hill",
+        "ranking": 51,
+        "studentCount": 30000,
+        "country": "United States",
+        "imageUrl": "/images/unc.jpg",
+        "yearFounded": 1789,
+        "campusArea": 3
+    },
+    {
+        "id": "u52",
+        "name": "Karolinska Institutet",
+        "ranking": 52,
+        "studentCount": 8000,
+        "country": "Sweden",
+        "imageUrl": "/images/karolinska.jpg",
+        "yearFounded": 1810,
+        "campusArea": 0.4
+    },
+    {
+        "id": "u53",
+        "name": "University of Pittsburgh",
+        "ranking": 53,
+        "studentCount": 28000,
+        "country": "United States",
+        "imageUrl": "/images/pittsburgh.jpg",
+        "yearFounded": 1787,
+        "campusArea": 0.54
+    },
+    {
+        "id": "u54",
+        "name": "City University of Hong Kong",
+        "ranking": 54,
+        "studentCount": 20000,
+        "country": "Hong Kong",
+        "imageUrl": "/images/cityu.jpg",
+        "yearFounded": 1984,
+        "campusArea": 0.15
+    },
+    {
+        "id": "u55",
+        "name": "University of Chinese Academy of Sciences, CAS",
+        "ranking": 55,
+        "studentCount": 50000,
+        "country": "China",
+        "imageUrl": "/images/ucas.jpg",
+        "yearFounded": 1978,
+        "campusArea": 0.5
+    },
+    {
+        "id": "u56",
+        "name": "Leiden University",
+        "ranking": 56,
+        "studentCount": 30000,
+        "country": "Netherlands",
+        "imageUrl": "/images/leiden.jpg",
+        "yearFounded": 1575,
+        "campusArea": 0.1
+    },
+    {
+        "id": "u57",
+        "name": "University of Munich",
+        "ranking": 57,
+        "studentCount": 50000,
+        "country": "Germany",
+        "imageUrl": "/images/munich.jpg",
+        "yearFounded": 1472,
+        "campusArea": 0.7
+    },
+    {
+        "id": "u58",
+        "name": "Hong Kong Polytechnic University",
+        "ranking": 58,
+        "studentCount": 25000,
+        "country": "Hong Kong",
+        "imageUrl": "/images/polyu.jpg",
+        "yearFounded": 1937,
+        "campusArea": 0.09
+    },
+    {
+        "id": "u59",
+        "name": "Free University of Berlin",
+        "ranking": 59,
+        "studentCount": 32000,
+        "country": "Germany",
+        "imageUrl": "/images/fu-berlin.jpg",
+        "yearFounded": 1948,
+        "campusArea": 1.3
+    },
+    {
+        "id": "u60",
+        "name": "Ruprecht Karls University Heidelberg",
+        "ranking": 60,
+        "studentCount": 29000,
+        "country": "Germany",
+        "imageUrl": "/images/heidelberg.jpg",
+        "yearFounded": 1386,
+        "campusArea": 1.2
+    },
+    {
+        "id": "u61",
+        "name": "University of Zurich",
+        "ranking": 61,
+        "studentCount": 26000,
+        "country": "Switzerland",
+        "imageUrl": "/images/uzh.jpg",
+        "yearFounded": 1833,
+        "campusArea": 0.4
+    },
+    {
+        "id": "u62",
+        "name": "McGill University",
+        "ranking": 62,
+        "studentCount": 40000,
+        "country": "Canada",
+        "imageUrl": "/images/mcgill.jpg",
+        "yearFounded": 1821,
+        "campusArea": 0.32
+    },
+    {
+        "id": "u63",
+        "name": "Sorbonne Universite",
+        "ranking": 63,
+        "studentCount": 55000,
+        "country": "France",
+        "imageUrl": "/images/sorbonne.jpg",
+        "yearFounded": 2018,
+        "campusArea": 0.2
+    },
+    {
+        "id": "u64",
+        "name": "University of Glasgow",
+        "ranking": 64,
+        "studentCount": 35000,
+        "country": "United Kingdom",
+        "imageUrl": "/images/glasgow.jpg",
+        "yearFounded": 1451,
+        "campusArea": 0.34
+    },
+    {
+        "id": "u65",
+        "name": "University of Texas Austin",
+        "ranking": 65,
+        "studentCount": 51000,
+        "country": "United States",
+        "imageUrl": "/images/utexas.jpg",
+        "yearFounded": 1883,
+        "campusArea": 1.7
+    },
+    {
+        "id": "u66",
+        "name": "Ohio State University",
+        "ranking": 66,
+        "studentCount": 61000,
+        "country": "United States",
+        "imageUrl": "/images/ohiostate.jpg",
+        "yearFounded": 1870,
+        "campusArea": 6.5
+    },
+    {
+        "id": "u67",
+        "name": "Vanderbilt University",
+        "ranking": 67,
+        "studentCount": 13000,
+        "country": "United States",
+        "imageUrl": "/images/vanderbilt.jpg",
+        "yearFounded": 1873,
+        "campusArea": 1.3
+    },
+    {
+        "id": "u68",
+        "name": "University of Manchester",
+        "ranking": 68,
+        "studentCount": 40000,
+        "country": "United Kingdom",
+        "imageUrl": "/images/manchester.jpg",
+        "yearFounded": 2004,
+        "campusArea": 2.7
+    },
+    {
+        "id": "u69",
+        "name": "Emory University",
+        "ranking": 69,
+        "studentCount": 15000,
+        "country": "United States",
+        "imageUrl": "/images/emory.jpg",
+        "yearFounded": 1836,
+        "campusArea": 2.8
+    },
+    {
+        "id": "u70",
+        "name": "Fudan University",
+        "ranking": 70,
+        "studentCount": 45000,
+        "country": "China",
+        "imageUrl": "/images/fudan.jpg",
+        "yearFounded": 1905,
+        "campusArea": 2.44
+    },
+    {
+        "id": "u71",
+        "name": "University of Science & Technology of China CAS",
+        "ranking": 71,
+        "studentCount": 16000,
+        "country": "China",
+        "imageUrl": "/images/ustc.jpg",
+        "yearFounded": 1958,
+        "campusArea": 1.45
+        },
+        {
+        "id": "u72",
+        "name": "University of Maryland College Park",
+        "ranking": 72,
+        "studentCount": 41000,
+        "country": "United States",
+        "imageUrl": "/images/maryland.jpg",
+        "yearFounded": 1856,
+        "campusArea": 5.3
+        },
+        {
+        "id": "u73",
+        "name": "University of Minnesota Twin Cities",
+        "ranking": 73,
+        "studentCount": 50000,
+        "country": "United States",
+        "imageUrl": "/images/minnesota.jpg",
+        "yearFounded": 1851,
+        "campusArea": 4.7
+        },
+        {
+        "id": "u74",
+        "name": "University of Wisconsin Madison",
+        "ranking": 74,
+        "studentCount": 45000,
+        "country": "United States",
+        "imageUrl": "/images/wisconsin.jpg",
+        "yearFounded": 1848,
+        "campusArea": 3.8
+        },
+        {
+        "id": "u75",
+        "name": "University of Groningen",
+        "ranking": 75,
+        "studentCount": 32000,
+        "country": "Netherlands",
+        "imageUrl": "/images/groningen.jpg",
+        "yearFounded": 1614,
+        "campusArea": 2.2
+        },
+        {
+        "id": "u76",
+        "name": "Erasmus University Rotterdam",
+        "ranking": 76,
+        "studentCount": 30000,
+        "country": "Netherlands",
+        "imageUrl": "/images/erasmus.jpg",
+        "yearFounded": 1913,
+        "campusArea": 0.5
+        },
+        {
+        "id": "u77",
+        "name": "University of Southern California",
+        "ranking": 77,
+        "studentCount": 48000,
+        "country": "United States",
+        "imageUrl": "/images/usc.jpg",
+        "yearFounded": 1880,
+        "campusArea": 0.9
+        },
+        {
+        "id": "u78",
+        "name": "Universite Paris Saclay",
+        "ranking": 78,
+        "studentCount": 48000,
+        "country": "France",
+        "imageUrl": "/images/paris-saclay.jpg",
+        "yearFounded": 2019,
+        "campusArea": 6.1
+        },
+        {
+        "id": "u79",
+        "name": "Georgia Institute of Technology",
+        "ranking": 79,
+        "studentCount": 40000,
+        "country": "United States",
+        "imageUrl": "/images/georgia-tech.jpg",
+        "yearFounded": 1885,
+        "campusArea": 1.6
+        },
+        {
+        "id": "u80",
+        "name": "Technical University of Munich",
+        "ranking": 80,
+        "studentCount": 45000,
+        "country": "Germany",
+        "imageUrl": "/images/tum.jpg",
+        "yearFounded": 1868,
+        "campusArea": 6.5
+        },
+        {
+        "id": "u81",
+        "name": "Vrije Universiteit Amsterdam",
+        "ranking": 81,
+        "studentCount": 26000,
+        "country": "Netherlands",
+        "imageUrl": "/images/vu-amsterdam.jpg",
+        "yearFounded": 1880,
+        "campusArea": 0.14
+        },
+        {
+        "id": "u82",
+        "name": "University of Barcelona",
+        "ranking": 82,
+        "studentCount": 63000,
+        "country": "Spain",
+        "imageUrl": "/images/barcelona.jpg",
+        "yearFounded": 1450,
+        "campusArea": 0.54
+        },
+        {
+        "id": "u83",
+        "name": "University of Technology Sydney",
+        "ranking": 83,
+        "studentCount": 45000,
+        "country": "Australia",
+        "imageUrl": "/images/uts.jpg",
+        "yearFounded": 1988,
+        "campusArea": 0.1
+        },
+        {
+        "id": "u84",
+        "name": "University of Tokyo",
+        "ranking": 84,
+        "studentCount": 28000,
+        "country": "Japan",
+        "imageUrl": "/images/tokyo.jpg",
+        "yearFounded": 1877,
+        "campusArea": 5.6
+        },
+        {
+        "id": "u85",
+        "name": "Sun Yat Sen University",
+        "ranking": 85,
+        "studentCount": 82000,
+        "country": "China",
+        "imageUrl": "/images/sun-yat-sen.jpg",
+        "yearFounded": 1924,
+        "campusArea": 9.15
+        },
+        {
+        "id": "u86",
+        "name": "Australian National University",
+        "ranking": 86,
+        "studentCount": 25000,
+        "country": "Australia",
+        "imageUrl": "/images/anu.jpg",
+        "yearFounded": 1946,
+        "campusArea": 1.45
+        },
+        {
+        "id": "u87",
+        "name": "Boston University",
+        "ranking": 87,
+        "studentCount": 34000,
+        "country": "United States",
+        "imageUrl": "/images/boston.jpg",
+        "yearFounded": 1839,
+        "campusArea": 0.68
+        },
+        {
+        "id": "u88",
+        "name": "Ecole Polytechnique Federale de Lausanne",
+        "ranking": 88,
+        "studentCount": 11000,
+        "country": "Switzerland",
+        "imageUrl": "/images/epfl.jpg",
+        "yearFounded": 1853,
+        "campusArea": 0.55
+        },
+        {
+        "id": "u89",
+        "name": "Nanjing University",
+        "ranking": 89,
+        "studentCount": 35000,
+        "country": "China",
+        "imageUrl": "/images/nanjing.jpg",
+        "yearFounded": 1902,
+        "campusArea": 2.6
+        },
+        {
+        "id": "u90",
+        "name": "Wuhan University",
+        "ranking": 90,
+        "studentCount": 54000,
+        "country": "China",
+        "imageUrl": "/images/wuhan.jpg",
+        "yearFounded": 1893,
+        "campusArea": 3.45
+        },
+        {
+        "id": "u91",
+        "name": "Huazhong University of Science & Technology",
+        "ranking": 91,
+        "studentCount": 55000,
+        "country": "China",
+        "imageUrl": "/images/hust.jpg",
+        "yearFounded": 1952,
+        "campusArea": 4.67
+        },
+        {
+        "id": "u92",
+        "name": "Pennsylvania State University",
+        "ranking": 92,
+        "studentCount": 89000,
+        "country": "United States",
+        "imageUrl": "/images/pennstate.jpg",
+        "yearFounded": 1855,
+        "campusArea": 33.5
+        },
+        {
+        "id": "u93",
+        "name": "University of California Santa Barbara",
+        "ranking": 93,
+        "studentCount": 26000,
+        "country": "United States",
+        "imageUrl": "/images/ucsb.jpg",
+        "yearFounded": 1891,
+        "campusArea": 4.27
+        },
+        {
+        "id": "u94",
+        "name": "Queen Mary University London",
+        "ranking": 94,
+        "studentCount": 26000,
+        "country": "United Kingdom",
+        "imageUrl": "/images/qmul.jpg",
+        "yearFounded": 1887,
+        "campusArea": 0.15
+        },
+        {
+        "id": "u95",
+        "name": "University of Birmingham",
+        "ranking": 95,
+        "studentCount": 38000,
+        "country": "United Kingdom",
+        "imageUrl": "/images/birmingham.jpg",
+        "yearFounded": 1900,
+        "campusArea": 2.7
+        },
+        {
+        "id": "u96",
+        "name": "University of California Davis",
+        "ranking": 96,
+        "studentCount": 39000,
+        "country": "United States",
+        "imageUrl": "/images/ucdavis.jpg",
+        "yearFounded": 1905,
+        "campusArea": 21.8
+        },
+        {
+        "id": "u97",
+        "name": "University of California Irvine",
+        "ranking": 97,
+        "studentCount": 37000,
+        "country": "United States",
+        "imageUrl": "/images/uci.jpg",
+        "yearFounded": 1965,
+        "campusArea": 6
+        },
+        {
+        "id": "u98",
+        "name": "University of Western Australia",
+        "ranking": 98,
+        "studentCount": 25000,
+        "country": "Australia",
+        "imageUrl": "/images/uwa.jpg",
+        "yearFounded": 1911,
+        "campusArea": 1.21
+        },
+        {
+        "id": "u99",
+        "name": "University of Adelaide",
+        "ranking": 99,
+        "studentCount": 25000,
+        "country": "Australia",
+        "imageUrl": "/images/adelaide.jpg",
+        "yearFounded": 1874,
+        "campusArea": 18.08
+        },
+        {
+        "id": "u100",
+        "name": "University of Oslo",
+        "ranking": 100,
+        "studentCount": 28000,
+        "country": "Norway",
+        "imageUrl": "/images/oslo.jpg",
+        "yearFounded": 1811,
+        "campusArea": 0.42
+        }
 ]
