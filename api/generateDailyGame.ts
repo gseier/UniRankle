@@ -5,14 +5,26 @@ const prisma = new PrismaClient();
 
 export default async function handler(req: Request, res: Response) {
   try {
-    // 1️⃣ Determine the date to use (from query or fallback to UTC today)
-    const { dateKey } = req.query as { dateKey?: string };
-    const targetDate =
-      typeof dateKey === 'string'
-        ? dateKey
-        : new Date().toISOString().slice(0, 10); // default to UTC date
+    // 1️⃣ Read query params
+    const { dateKey, future } = req.query as { dateKey?: string; future?: string };
 
-    // 2️⃣ Try to find the daily game for that date
+    // 2️⃣ Determine which date to target
+    let targetDate: string;
+
+    if (future === 'true') {
+      // Used by cron: generate the *next day's* game
+      const tomorrow = new Date();
+      tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
+      targetDate = tomorrow.toISOString().slice(0, 10);
+    } else if (typeof dateKey === 'string') {
+      // Used by frontend: get the user's local day
+      targetDate = dateKey;
+    } else {
+      // Fallback: use current UTC day
+      targetDate = new Date().toISOString().slice(0, 10);
+    }
+
+    // 3️⃣ Try to find existing game for that date
     let dailyGame = await prisma.dailyGame.findUnique({
       where: { dateKey: targetDate },
       include: {
@@ -20,7 +32,7 @@ export default async function handler(req: Request, res: Response) {
       },
     });
 
-    // 3️⃣ If not found, create one (cron handles this daily)
+    // 4️⃣ If missing, create a new one
     if (!dailyGame || dailyGame.entries.length === 0) {
       const rankingBy =
         Math.random() > 0.5 ? RankingBy.RANKING : RankingBy.STUDENT_COUNT;
@@ -32,7 +44,7 @@ export default async function handler(req: Request, res: Response) {
         where: { dateKey: targetDate },
         update: {
           entries: {
-            deleteMany: {}, // clear existing if any
+            deleteMany: {}, // clear old entries
             create: shuffled.map((u, i) => ({
               universityId: u.id,
               orderIndex: i,
@@ -55,7 +67,7 @@ export default async function handler(req: Request, res: Response) {
       });
     }
 
-    // 4️⃣ Return the requested (or newly created) game
+    // 5️⃣ Return the requested (or newly created) game
     res.status(200).json(dailyGame);
   } catch (err) {
     console.error('generateDailyGame error:', err);

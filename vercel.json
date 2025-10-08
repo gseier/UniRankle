@@ -1,8 +1,8 @@
 {
   "crons": [
     {
-      "path": "/api/generateDailyGame",
-      "schedule": "0 10 * * *"
+      "path": "/api/generateDailyGame?future=true",
+      "schedule": "0 0 * * *"
     }
   ]
 }
