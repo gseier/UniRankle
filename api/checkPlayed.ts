@@ -10,12 +10,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const cookies = parse(req.headers.cookie || '')
     const cookieId = cookies['uid']
-    const dateKey = new Date().toISOString().slice(0, 10)
+    const { dateKey } = req.query as { dateKey?: string }
+    let targetDate: string;
+    if (typeof dateKey === 'string') {
+      // Used by frontend: get the user's local day
+      targetDate = dateKey;
+    } else {
+      // Fallback: use current UTC day
+      targetDate = new Date().toISOString().slice(0, 10);
+    }
 
     if (!cookieId) return res.json({ alreadyPlayed: false })
 
     const existing = await prisma.gameScore.findFirst({
-      where: { cookieId, dateKey },
+      where: { cookieId, dateKey: targetDate },
     })
 
     if (existing) {

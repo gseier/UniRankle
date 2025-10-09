@@ -84,7 +84,8 @@ const RankingList: React.FC = () => {
   // Check if player has already played today
   useEffect(() => {
     (async () => {
-      const res = await fetch('/api/checkPlayed');
+      const localDateKey = new Date().toLocaleDateString('en-CA');
+      const res = await fetch(`/api/checkPlayed?dateKey=${localDateKey}`);
       const data = await res.json();
       if (data.alreadyPlayed) {
         setAlreadyPlayed(true);
