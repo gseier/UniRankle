@@ -91,7 +91,7 @@ const RankingList: React.FC = () => {
         setAlreadyPlayed(true);
         setIsSubmitted(true);
         setPreviousScore(data.previousScore);
-        const avgRes = await fetch('/api/getScores');
+        const avgRes = await fetch(`/api/getScores?dateKey=${localDateKey}`);
         const avgData = await avgRes.json();
         setAvgScore(avgData.average);
       }
@@ -137,7 +137,7 @@ const RankingList: React.FC = () => {
     localStorage.setItem('uniOrder', JSON.stringify(universities.map(u => u.id)));
     
     const localDateKey = new Date().toLocaleDateString('en-CA');
-    fetch('/api/saveScore', {
+    fetch(`/api/saveScore?dateKey=${localDateKey}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ score: finalScore, dateKey: localDateKey }),
@@ -145,7 +145,7 @@ const RankingList: React.FC = () => {
       .then(res => res.json())
       .then(async (data) => {
         if (data.success || data.alreadyPlayed) {
-          const avgRes = await fetch('/api/getScores');
+          const avgRes = await fetch(`/api/getScores?dateKey=${localDateKey}`);
           const avgData = await avgRes.json();
           setAvgScore(avgData.average);
           setPreviousScore(data.previousScore ?? finalScore);

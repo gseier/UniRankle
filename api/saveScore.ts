@@ -10,7 +10,7 @@ declare global {
 
 const prisma: PrismaClient = global.__prismaClient ?? (global.__prismaClient = new PrismaClient())
 
-type Req = IncomingMessage & { body?: unknown; headers: IncomingMessage['headers'] }
+type Req = IncomingMessage & { body?: unknown; headers: IncomingMessage['headers']; query?: Record<string, unknown> }
 type Res = ServerResponse
 
 function sendJSON(res: Res, status: number, payload: unknown): void {
@@ -61,11 +61,19 @@ export default async function handler(req: Req, res: Res): Promise<void> {
       cookieId = randomUUID()
       res.setHeader('Set-Cookie', `uid=${cookieId}; Path=/; Max-Age=31536000; HttpOnly; SameSite=Lax`)
     }
-
-    const dateKey = new Date().toISOString().slice(0, 10)
+    
+    const { dateKey } = req.query as { dateKey?: string }
+    let targetDate: string;
+    if (typeof dateKey === 'string') {
+      // Used by frontend: get the user's local day
+      targetDate = dateKey;
+    } else {
+      // Fallback: use current UTC day
+      targetDate = new Date().toISOString().slice(0, 10);
+    }
 
     const existing = await prisma.gameScore.findFirst({
-      where: { cookieId, dateKey },
+      where: { cookieId, dateKey: targetDate },
     })
     if (existing)
       return sendJSON(res, 200, {
@@ -75,9 +83,8 @@ export default async function handler(req: Req, res: Res): Promise<void> {
       })
 
       
-    const localDateKey = dateKey || new Date().toLocaleDateString('en-CA');
     await prisma.gameScore.create({
-      data: { cookieId, dateKey: localDateKey, score },
+      data: { cookieId, dateKey: targetDate, score },
     })
 
     sendJSON(res, 200, { success: true })
