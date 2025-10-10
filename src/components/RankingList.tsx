@@ -179,11 +179,11 @@ const RankingList: React.FC = () => {
       <div className="container mx-auto p-4 sm:p-8 max-w-4xl">
         <header className="text-center mb-10">
             <div className="flex justify-center items-center">
-            <img
+              <img
               src={unirankleImage}
               alt="UniRankle Logo"
-              className="w-32 h-32 sm:w-40 sm:h-40 object-contain animate-bounce"
-            />
+              className="w-48 h-48 sm:w-64 sm:h-64 object-contain transition-transform duration-500 hover:scale-105"
+              />
             </div>
           
           <p className="text-gray-700 mt-4 max-w-xl mx-auto text-lg border-t pt-4">
