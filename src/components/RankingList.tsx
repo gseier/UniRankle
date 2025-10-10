@@ -5,6 +5,7 @@ import { useDailyChallenge } from '../hooks/useDailyChallenge';
 import { arrayMove, calculateScore, calculateMaxScore } from '../utils/dndUtils';
 import type { University } from '../types/University';
 import { MdOutlineLocalLibrary, MdInsights, MdOutlineFormatListNumberedRtl, MdPeopleOutline, MdOutlineMap, MdOutlineImportContacts } from 'react-icons/md';
+import unirankleImage from '/images/unirankle.png';
 
 const formatRankingVariable = (key: keyof University | 'studentCount') => {
   switch (key) {
@@ -177,16 +178,13 @@ const RankingList: React.FC = () => {
     <div className="relative min-h-screen bg-gray-100 font-sans antialiased py-8">
       <div className="container mx-auto p-4 sm:p-8 max-w-4xl">
         <header className="text-center mb-10">
-          <h1
-            className="
-              text-6xl sm:text-7xl font-black 
-              bg-clip-text text-transparent
-              animated-title 
-              bg-gradient-to-r from-academic-indigo via-academic-orange to-academic-cream
-              tracking-tightest leading-none"
-          >
-            UniRankle
-          </h1>
+            <div className="flex justify-center items-center">
+            <img
+              src={unirankleImage}
+              alt="UniRankle Logo"
+              className="w-32 h-32 sm:w-40 sm:h-40 object-contain animate-bounce"
+            />
+            </div>
           
           <p className="text-gray-700 mt-4 max-w-xl mx-auto text-lg border-t pt-4">
             Today's challenge:
