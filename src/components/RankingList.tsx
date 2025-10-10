@@ -182,7 +182,7 @@ const RankingList: React.FC = () => {
               <img
               src={unirankleImage}
               alt="UniRankle Logo"
-              className="w-48 h-48 sm:w-64 sm:h-64 object-contain transition-transform duration-500 hover:scale-105"
+              className="w-64 h-24 sm:w-80 sm:h-30 object-contain transition-transform duration-500 hover:scale-105"
               />
             </div>
           
