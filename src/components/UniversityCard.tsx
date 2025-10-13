@@ -48,78 +48,61 @@ const UniversityCard: React.FC<UniversityCardProps> = ({
   return (
     // Card Container
     <div
-      className={`
-        flex flex-col p-0 bg-white border-2 border-transparent 
-        rounded-2xl transition-all duration-300 w-full shadow-lg overflow-hidden
-        ${isDragging 
-          ? 'opacity-80 scale-[0.98] border-indigo-500' 
-          : 'hover:shadow-xl'}
-      `}
-      aria-label={`University Card for ${university.name}`}
+  className={`
+    flex flex-col bg-white border-2 border-transparent
+    rounded-2xl transition-all duration-300 w-full max-w-full
+    shadow-lg overflow-hidden
+    ${isDragging ? 'opacity-80 scale-[0.98] border-indigo-500' : 'hover:shadow-xl'}
+  `}
+  aria-label={`University Card for ${university.name}`}
+>
+  {/* Image */}
+  <div className="relative w-full h-28 sm:h-32 overflow-hidden">
+    <img
+      src={university.imageUrl}
+      alt={`View of ${university.name} campus`}
+      className="w-full h-full object-cover"
+      onError={(e) => {
+        const t = e.target as HTMLImageElement;
+        t.src = fallbackImageUrl;
+        t.className = 'w-full h-full object-contain p-4 bg-gray-200';
+      }}
+    />
+    <div
+      className={`absolute inset-0 bg-gray-900/70 flex items-center justify-center p-2 text-center transition-opacity duration-500
+      ${isSubmitted ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
     >
-      
-      {/* 1. Image Area (Top) with Submission Overlay */}
-      <div className="relative w-full h-32 overflow-hidden">
-        <img
-          src={university.imageUrl}
-          alt={`View of ${university.name} campus`}
-          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.onerror = null;
-            target.src = fallbackImageUrl;
-            target.className = "w-full h-full object-contain p-4 bg-gray-200"; 
-          }}
-        />
-        {/* Submission Overlay (The Graph/Reveal) */}
-        <div 
-            className={`absolute inset-0 bg-gray-900/70 transition-opacity duration-500 flex items-center justify-center p-4
-            ${isSubmitted ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-        >
-            <div className="text-center">
-                <p className="text-sm font-light uppercase tracking-wider text-gray-300">
-                    Correct {variableLabel}
-                </p>
-                <p className={`text-4xl font-extrabold ${valueColor} mt-1`}>
-                    {displayValue}
-                </p>
-            </div>
-        </div>
-        
-        {/* Subtle Fade-out Gradient Overlay (Only visible before submission) */}
-        <div className={`absolute inset-0 bg-gradient-to-t from-gray-50/70 to-transparent ${isSubmitted ? 'opacity-0' : 'opacity-100'}`}></div>
-      </div>
-
-      {/* 2. Text Content (Bottom) */}
-      <div className="flex-grow text-left p-4 pb-3 flex justify-between items-center">
-        
-        {/* University Details */}
-        <div className="min-w-0">
-          <h3 className="text-lg sm:text-xl font-extrabold text-gray-800 truncate leading-tight">
-            {university.name}
-          </h3>
-          <p className="text-xs sm:text-sm text-indigo-600 font-medium mt-1">
-            {university.country}
-          </p>
-        </div>
-
-        {/* Drag Handle Icon (Visual only) */}
-        <div className="flex-shrink-0 ml-4">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-gray-400 hover:text-indigo-600 transition-colors"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-            aria-hidden="true"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </div>
-
+      <div>
+        <p className="text-xs sm:text-sm text-gray-300 uppercase tracking-wide">Correct {variableLabel}</p>
+        <p className={`text-2xl sm:text-3xl font-extrabold ${valueColor}`}>{displayValue}</p>
       </div>
     </div>
+  </div>
+
+  {/* Text */}
+  <div className="flex justify-between items-center p-3 sm:p-4">
+    <div className="min-w-0">
+      <h3 className="text-base sm:text-lg font-bold text-gray-800 truncate max-w-[70vw] sm:max-w-full">
+        {university.name}
+      </h3>
+      <p className="text-xs sm:text-sm text-indigo-600 mt-1">{university.country}</p>
+    </div>
+
+    <div className="flex-shrink-0 ml-3">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-5 w-5 sm:h-6 sm:w-6 text-gray-400 hover:text-indigo-600"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={2}
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </div>
+  </div>
+</div>
+
   );
 };
 
