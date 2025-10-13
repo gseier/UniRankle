@@ -11,6 +11,9 @@ function App() {
     <div className="min-h-screen bg-gray-100 font-sans antialiased">
       {/* Renders the core game component */}
       <RankingList />
+      <footer className="text-center text-sm text-gray-500 p-4">
+        &copy; {new Date().getFullYear()} UniRank. All rights reserved.
+      </footer>
     </div>
   )
 }
