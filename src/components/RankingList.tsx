@@ -221,7 +221,7 @@ const RankingList: React.FC = () => {
           <link href="/src/style.css" rel="stylesheet"></link>
         </header>
 
-        <main className="grid gap-3 sm:gap-4 p-3 sm:p-6 bg-gray-50">
+        <main className="space-y-8 md:space-y-0 md:grid md:grid-cols-3 md:gap-8">
           <div className="md:col-span-1">
             <Scoreboard
               score={score}
