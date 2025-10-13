@@ -1,34 +1,52 @@
 import React from 'react';
 import type { University } from '../types/University';
-import type { RankVariable } from '../utils/dndUtils';
+import type { RankVariable } from '../utils/dndUtils'; 
 
-interface UniversityCardMobileProps {
+interface UniversityCardProps {
   university: University;
-  isDragging: boolean;
-  isSubmitted: boolean;
-  rankingBy: RankVariable;
-  correctValue: number | string;
+  isDragging?: boolean;
+  isSubmitted?: boolean; 
+  rankingBy?: RankVariable; 
+  correctValue?: number | string; 
 }
 
-const fallbackImageUrl = '/fallback_university.jpg';
+const formatValueDisplay = (key: RankVariable, value: number | string): string => {
+    if (key === 'studentCount' && typeof value === 'number') {
+        // Format large numbers for better display on the card
+        if (value >= 1000000) return (value / 1000000).toFixed(1) + 'M';
+        if (value >= 1000) return (value / 1000).toFixed(0) + 'K';
+    } else if (key === 'campusArea' && typeof value === 'number') {
+        return value.toFixed(2) + ' sq km';
+    }
+    return String(value);
+}
 
-const UniversityCardMobile: React.FC<UniversityCardMobileProps> = ({
-  university,
-  isDragging,
-  isSubmitted,
-  correctValue,
+const UniversityCardMobile: React.FC<UniversityCardProps> = ({ 
+  university, 
+  isDragging = false,
+  isSubmitted = false,
+  rankingBy = 'ranking',
+  correctValue
 }) => {
-  const displayValue =
-    typeof correctValue === 'number'
-      ? correctValue.toLocaleString()
-      : correctValue;
+  const fallbackText = university.name.split(' ').map(n => n[0]).join('').substring(0, 3).toUpperCase();
+  const fallbackImageUrl = `https://placehold.co/300x120/3B82F6/FFFFFF?text=${fallbackText}`;
 
-  let valueColor = 'text-indigo-600';
-  if (isSubmitted) {
-    valueColor = 'text-green-600';
-  }
+  const variableLabel = 
+    rankingBy === 'ranking' ? 'Global Rank' : 
+    rankingBy === 'studentCount' ? 'Student Count' : 
+    rankingBy === 'yearFounded' ? 'Founding Year' : 
+    rankingBy === 'campusArea' ? 'Campus Area' : 
+    'Value';
+  const displayValue = correctValue !== undefined ? formatValueDisplay(rankingBy, correctValue) : '';
+  const valueColor = 
+    rankingBy === 'ranking' ? 'text-yellow-300' : 
+    rankingBy === 'studentCount' ? 'text-blue-300' : 
+    rankingBy === 'yearFounded' ? 'text-purple-300' : 
+    rankingBy === 'campusArea' ? 'text-red-300' : 
+    'text-green-300';
 
   return (
+    // Card Container
     <div
       className={`
         flex flex-col bg-white rounded-lg overflow-hidden
@@ -48,11 +66,14 @@ const UniversityCardMobile: React.FC<UniversityCardMobileProps> = ({
             t.className = 'w-full h-full object-contain p-4 bg-gray-200';
           }}
         />
+
+        {/* Overlay when submitted */}
         {isSubmitted && (
-          <div className="absolute inset-0 bg-gray-900/60 flex items-center justify-center">
-            <p className={`text-base font-bold ${valueColor}`}>
-              {displayValue}
+          <div className="absolute inset-0 bg-gray-900/60 flex flex-col items-center justify-center text-center px-2">
+            <p className="text-[0.65rem] uppercase text-gray-300 tracking-wide">
+              Correct {variableLabel}
             </p>
+            <p className={`text-lg font-bold ${valueColor}`}>{displayValue}</p>
           </div>
         )}
       </div>
@@ -65,6 +86,7 @@ const UniversityCardMobile: React.FC<UniversityCardMobileProps> = ({
         <p className="text-[0.7rem] text-indigo-600">{university.country}</p>
       </div>
     </div>
+
   );
 };
 
