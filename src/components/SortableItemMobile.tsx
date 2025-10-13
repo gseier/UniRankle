@@ -1,5 +1,5 @@
 import React from 'react';
-import UniversityCard from './UniversityCard';
+import UniversityCardMobile from './UniversityCardMobile';
 import type { University } from '../types/University';
 import type { RankVariable } from '../utils/dndUtils';
 
@@ -70,7 +70,7 @@ const SortableItemMobile: React.FC<SortableItemMobileProps> = ({
 
       {/* University content */}
       <div className="flex flex-col">
-        <UniversityCard
+        <UniversityCardMobile
           university={university}
           isDragging={isDragging}
           isSubmitted={isSubmitted}
