@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import SortableItem from './SortableItem';
+import SortableItemMobile from './SortableItemMobile';
 import Scoreboard from './Scoreboard';
 import { useDailyChallenge } from '../hooks/useDailyChallenge';
 import { arrayMove, calculateScore, calculateMaxScore } from '../utils/dndUtils';
@@ -220,7 +221,7 @@ const RankingList: React.FC = () => {
           <link href="/src/style.css" rel="stylesheet"></link>
         </header>
 
-        <main className="space-y-8">
+        <main className="grid gap-3 sm:gap-4 p-3 sm:p-6 bg-gray-50">
           <div className="md:col-span-1">
             <Scoreboard
               score={score}
@@ -250,27 +251,46 @@ const RankingList: React.FC = () => {
               aria-live="polite"
             >
               {universities.map((uni, index) => {
-                const correctIndex = correctOrder.findIndex(
-                  (correctUni) => correctUni.id === uni.id
-                );
-                const correctRank =
-                  correctIndex !== -1 ? correctIndex + 1 : undefined;
-                return (
-                  <SortableItem
-                    key={uni.id}
-                    university={uni}
-                    index={index}
-                    onDragStart={handleDragStart}
-                    onDragEnter={handleDragEnter}
-                    onDragEnd={handleDragEnd}
-                    isDragging={draggedId === uni.id}
-                    isSubmitted={isSubmitted}
-                    correctRank={correctRank}
-                    rankingBy={rankingBy}
-                    correctValue={uni[rankingBy]}
-                  />
-                );
-              })}
+  const correctIndex = correctOrder.findIndex((u) => u.id === uni.id);
+  const correctRank = correctIndex !== -1 ? correctIndex + 1 : undefined;
+
+  return (
+    <div key={uni.id}>
+      {/* Mobile version */}
+      <div className="block sm:hidden">
+        <SortableItemMobile
+          university={uni}
+          index={index}
+          onDragStart={handleDragStart}
+          onDragEnter={handleDragEnter}
+          onDragEnd={handleDragEnd}
+          isDragging={draggedId === uni.id}
+          isSubmitted={isSubmitted}
+          correctRank={correctRank}
+          rankingBy={rankingBy}
+          correctValue={uni[rankingBy]}
+        />
+      </div>
+
+      {/* Desktop version */}
+      <div className="hidden sm:block">
+        <SortableItem
+          university={uni}
+          index={index}
+          onDragStart={handleDragStart}
+          onDragEnter={handleDragEnter}
+          onDragEnd={handleDragEnd}
+          isDragging={draggedId === uni.id}
+          isSubmitted={isSubmitted}
+          correctRank={correctRank}
+          rankingBy={rankingBy}
+          correctValue={uni[rankingBy]}
+        />
+      </div>
+    </div>
+  );
+})}
+
             </div>
           </div>
         </main>
