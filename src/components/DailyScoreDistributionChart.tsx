@@ -11,7 +11,7 @@ interface ChartProps {
 
 const chartConfig = {
   count: {
-    label: "Players",
+    label: "Answers",
   },
 } satisfies ChartConfig
 
@@ -25,7 +25,7 @@ const DailyScoreDistributionChart: React.FC<ChartProps> = ({ data, userScore }) 
     
       if (Number(dataEntry.name) === userScore && value > 0) {
         return (
-          <text x={x + width / 2} y={y} dy={-4} fill="#1f2937" fontSize={12} textAnchor="middle">
+          <text x={x + width / 2} y={y} dy={-2} fill="#1f2937" fontSize={12} textAnchor="middle">
             Your Score
           </text>
         );
@@ -40,7 +40,7 @@ const DailyScoreDistributionChart: React.FC<ChartProps> = ({ data, userScore }) 
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[250px] w-full">
-            <BarChart data={data} margin={{ top: 20, right: 20, left: 0, bottom: 10 }}>
+            <BarChart data={data} margin={{ top: 20, right: 20, left: -5, bottom: 5 }}>
               <CartesianGrid vertical={false} />
               <XAxis
                 dataKey="name"
@@ -54,11 +54,11 @@ const DailyScoreDistributionChart: React.FC<ChartProps> = ({ data, userScore }) 
                 axisLine={false}
                 tickMargin={10}
                 allowDecimals={false}
-                label={{ value: 'Players', angle: -90, position: 'insideLeft', offset: 10 }}
+                label={{ value: 'Answers', angle: -90, position: 'insideLeft', offset: 10 }}
               />
               <ChartTooltip
                 cursor={false}
-                content={<ChartTooltipContent />}
+                content={<ChartTooltipContent className="-ml-2" />}
               />
               <Bar dataKey="count" radius={4}>
                  <LabelList content={<CustomLabel />} />
