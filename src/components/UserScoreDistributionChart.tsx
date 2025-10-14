@@ -23,7 +23,7 @@ const UserScoreDistributionChart: React.FC<ChartProps> = ({ data }) => {
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[250px] w-full">
-            <BarChart data={data} margin={{ top: 20, right: 20, left: -5, bottom: 5 }}>
+            <BarChart data={data} margin={{ top: 20, right: 20, left: -5, bottom: 10 }}>
               <CartesianGrid vertical={false} />
               <XAxis
                 dataKey="name"
@@ -41,7 +41,7 @@ const UserScoreDistributionChart: React.FC<ChartProps> = ({ data }) => {
               />
               <ChartTooltip
                 cursor={false}
-                content={<ChartTooltipContent className="-ml-2" />}
+                content={<ChartTooltipContent className="-ml-5" />}
               />
               <Bar dataKey="count" fill="var(--color-count)" radius={4} />
             </BarChart>

@@ -40,7 +40,7 @@ const DailyScoreDistributionChart: React.FC<ChartProps> = ({ data, userScore }) 
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[250px] w-full">
-            <BarChart data={data} margin={{ top: 20, right: 20, left: -5, bottom: 5 }}>
+            <BarChart data={data} margin={{ top: 20, right: 20, left: -5, bottom: 10 }}>
               <CartesianGrid vertical={false} />
               <XAxis
                 dataKey="name"
@@ -58,7 +58,7 @@ const DailyScoreDistributionChart: React.FC<ChartProps> = ({ data, userScore }) 
               />
               <ChartTooltip
                 cursor={false}
-                content={<ChartTooltipContent className="-ml-2" />}
+                content={<ChartTooltipContent className="-ml-5" />}
               />
               <Bar dataKey="count" radius={4}>
                  <LabelList content={<CustomLabel />} />
