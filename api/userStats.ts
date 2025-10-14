@@ -20,12 +20,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!scores.length) return res.json({ totalGames: 0, avgScore: null })
 
     const total = scores.length
-    const avg =
-      total > 0
-      ? Math.round(
-        (scores.reduce((sum, s) => sum + Number(s.score), 0) / total) * 10
-        ) / 10
-      : 0
+    const sum = scores.reduce((acc, s) => acc + Number(s.score), 0)
+    const avg = total > 0 ? parseFloat((sum / total).toFixed(1)) : 0
 
     res.json({ totalGames: scores.length, avgScore: avg })
   } catch (err: unknown) {
