@@ -24,6 +24,10 @@
   animation: gradient-flow 10s ease infinite;
 }
 
+[data-chart] .recharts-default-tooltip {
+  padding-left: 6px !important; /* tighten left padding */
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

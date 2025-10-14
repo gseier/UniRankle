@@ -25,7 +25,7 @@ const DailyScoreDistributionChart: React.FC<ChartProps> = ({ data, userScore }) 
     
       if (Number(dataEntry.name) === userScore && value > 0) {
         return (
-          <text x={x + width / 2} y={y} dy={-2} fill="#1f2937" fontSize={12} textAnchor="middle">
+          <text x={x + width / 2} y={y} dy={-8} fill="#1f2937" fontSize={12} textAnchor="middle">
             Your Score
           </text>
         );
