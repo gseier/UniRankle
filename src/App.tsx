@@ -12,7 +12,7 @@ function App() {
       {/* Renders the core game component */}
       <RankingList />
       <footer className="text-center text-sm text-gray-500 p-4">
-        &copy; {new Date().getFullYear()} UniRank. All rights reserved.
+        &copy; {new Date().getFullYear()} UniRankle. All rights reserved.
         <div>
           <a href="https://github.com/gseier" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
             Made by G Seier
