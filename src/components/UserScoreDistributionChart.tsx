@@ -23,14 +23,14 @@ const UserScoreDistributionChart: React.FC<ChartProps> = ({ data }) => {
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[250px] w-full">
-            <BarChart data={data} margin={{ top: 20, right: 20, left: 10, bottom: 20 }}>
+            <BarChart data={data} margin={{ top: 20, right: 20, left: 0, bottom: 10 }}>
               <CartesianGrid vertical={false} />
               <XAxis
                 dataKey="name"
                 tickLine={false}
                 tickMargin={10}
                 axisLine={false}
-                label={{ value: 'Score', position: 'insideBottom', offset: -5 }}
+                label={{ value: 'Score', position: 'insideBottom', offset: -10 }}
               />
               <YAxis
                 tickLine={false}
