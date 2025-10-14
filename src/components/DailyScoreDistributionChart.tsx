@@ -40,7 +40,7 @@ const DailyScoreDistributionChart: React.FC<ChartProps> = ({ data, userScore }) 
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[250px] w-full">
-            <BarChart data={data} margin={{ top: 20, right: 10, left: -10, bottom: 0 }}>
+            <BarChart data={data} margin={{ top: 20, right: 20, left: 30, bottom: 40 }}>
               <CartesianGrid vertical={false} />
               <XAxis
                 dataKey="name"
