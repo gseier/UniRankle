@@ -7,6 +7,8 @@ import { arrayMove, calculateScore, calculateMaxScore } from '../utils/dndUtils'
 import type { University } from '../types/University';
 import { MdOutlineLocalLibrary, MdInsights, MdOutlineFormatListNumberedRtl, MdPeopleOutline, MdOutlineMap, MdOutlineImportContacts } from 'react-icons/md';
 import unirankleImage from '/images/unirankle.png';
+import DailyScoreDistributionChart from './DailyScoreDistributionChart'; // Import chart
+import UserScoreDistributionChart from './UserScoreDistributionChart'; // Import chart
 
 const formatRankingVariable = (key: keyof University | 'studentCount') => {
   switch (key) {
@@ -20,7 +22,6 @@ const formatRankingVariable = (key: keyof University | 'studentCount') => {
 
 const RankingList: React.FC = () => {
   const { dailyUniversities, correctOrder, rankingBy, isLoading } = useDailyChallenge();
-
   const [universities, setUniversities] = useState<University[]>([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [draggedId, setDraggedId] = useState<string | null>(null);
@@ -31,11 +32,23 @@ const RankingList: React.FC = () => {
   const [avgScore, setAvgScore] = useState<number | null>(null);
   const [countdown, setCountdown] = useState<string>('');
   const [showPopup, setShowPopup] = useState(false);
+  const [userAvg, setUserAvg] = useState<number | null>(null);
+  const [totalGames, setTotalGames] = useState<number>(0);
+  
+  // State for chart data
+  interface DistributionData {
+    score: number;
+    count: number;
+  }
 
-  const [userAvg, setUserAvg] = useState<number | null>(null)
-  const [totalGames, setTotalGames] = useState<number>(0)
+  const [dailyDistribution, setDailyDistribution] = useState<DistributionData[] | null>(null);
+  interface UserDistributionData {
+    score: number;
+    count: number;
+  }
+  const [userDistribution, setUserDistribution] = useState<UserDistributionData[] | null>(null);
 
-  // Fetch user stats
+  // Fetch user stats (including all-time distribution)
   useEffect(() => {
     const fetchUserStats = async () => {
       const res = await fetch('/api/userStats');
@@ -43,12 +56,16 @@ const RankingList: React.FC = () => {
       if (res.ok) {
         setUserAvg(data.avgScore);
         setTotalGames(data.totalGames);
+        // Only set distribution if there's data to show
+        if (data.distribution && data.distribution.some((d: { score: number; count: number }) => d.count > 0)) {
+          setUserDistribution(data.distribution);
+        }
       }
     };
     fetchUserStats();
   }, []);
 
-  // Load universities (and restore saved order if exists)
+  // Load universities
   useEffect(() => {
     const savedOrder = localStorage.getItem('uniOrder');
     if (savedOrder && dailyUniversities.length) {
@@ -71,6 +88,7 @@ const RankingList: React.FC = () => {
             const tomorrow = new Date();
             tomorrow.setHours(24, 0, 0, 0);
             const diff = Math.max(0, tomorrow.getTime() - now.getTime());
+            
             const hrs = Math.floor(diff / (1000 * 60 * 60));
             const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const secs = Math.floor((diff % (1000 * 60)) / 1000);
@@ -81,8 +99,7 @@ const RankingList: React.FC = () => {
         const timer = setInterval(updateCountdown, 1000);
         return () => clearInterval(timer);
     }, []);
-
-
+    
   // Check if player has already played today
   useEffect(() => {
     (async () => {
@@ -96,6 +113,7 @@ const RankingList: React.FC = () => {
         const avgRes = await fetch(`/api/getScores?dateKey=${localDateKey}`);
         const avgData = await avgRes.json();
         setAvgScore(avgData.average);
+        setDailyDistribution(avgData.distribution); // Get daily distribution
       }
     })().catch(() => {});
   }, []);
@@ -108,7 +126,7 @@ const RankingList: React.FC = () => {
       setTimeout(() => setDraggedId(id), 0);
     }
   }, []);
-
+  
   const handleDragEnter = useCallback(
     (e: React.DragEvent<HTMLDivElement>) => {
       e.preventDefault();
@@ -123,7 +141,7 @@ const RankingList: React.FC = () => {
     },
     [universities, draggedId, isSubmitted]
   );
-
+  
   const handleDragEnd = useCallback(() => setDraggedId(null), []);
 
   // --- Submit handler ---
@@ -135,7 +153,6 @@ const RankingList: React.FC = () => {
     setAlreadyPlayed(true);
     setShowPopup(true);
 
-    // Save order so it stays fixed
     localStorage.setItem('uniOrder', JSON.stringify(universities.map(u => u.id)));
     
     const localDateKey = new Date().toLocaleDateString('en-CA');
@@ -150,13 +167,14 @@ const RankingList: React.FC = () => {
           const avgRes = await fetch(`/api/getScores?dateKey=${localDateKey}`);
           const avgData = await avgRes.json();
           setAvgScore(avgData.average);
+          setDailyDistribution(avgData.distribution); // Get daily distribution on submit
           setPreviousScore(data.previousScore ?? finalScore);
         }
       })
       .catch(err => console.error('Failed to save score', err));
   }, [universities, correctOrder, isSubmitted, alreadyPlayed]);
 
-  // --- Loading states ---
+  // Loading states
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen text-gray-600">
@@ -251,57 +269,55 @@ const RankingList: React.FC = () => {
               aria-live="polite"
             >
               {universities.map((uni, index) => {
-  const correctIndex = correctOrder.findIndex((u) => u.id === uni.id);
-  const correctRank = correctIndex !== -1 ? correctIndex + 1 : undefined;
+                const correctIndex = correctOrder.findIndex((u) => u.id === uni.id);
+                const correctRank = correctIndex !== -1 ? correctIndex + 1 : undefined;
+                return (
+                    <div key={uni.id}>
+                      {/* Mobile version */}
+                      <div className="block sm:hidden">
+                        <SortableItemMobile
+                          university={uni}
+                          index={index}
+                          onDragStart={handleDragStart}
+                          onDragEnter={handleDragEnter}
+                          onDragEnd={handleDragEnd}
+                          isDragging={draggedId === uni.id}
+                          isSubmitted={isSubmitted}
+                          correctRank={correctRank}
+                          rankingBy={rankingBy}
+                          correctValue={uni[rankingBy]}
+                        />
+                      </div>
 
-  return (
-    <div key={uni.id}>
-      {/* Mobile version */}
-      <div className="block sm:hidden">
-        <SortableItemMobile
-          university={uni}
-          index={index}
-          onDragStart={handleDragStart}
-          onDragEnter={handleDragEnter}
-          onDragEnd={handleDragEnd}
-          isDragging={draggedId === uni.id}
-          isSubmitted={isSubmitted}
-          correctRank={correctRank}
-          rankingBy={rankingBy}
-          correctValue={uni[rankingBy]}
-        />
-      </div>
-
-      {/* Desktop version */}
-      <div className="hidden sm:block">
-        <SortableItem
-          university={uni}
-          index={index}
-          onDragStart={handleDragStart}
-          onDragEnter={handleDragEnter}
-          onDragEnd={handleDragEnd}
-          isDragging={draggedId === uni.id}
-          isSubmitted={isSubmitted}
-          correctRank={correctRank}
-          rankingBy={rankingBy}
-          correctValue={uni[rankingBy]}
-        />
-      </div>
-    </div>
-  );
-})}
-
+                      {/* Desktop version */}
+                      <div className="hidden sm:block">
+                        <SortableItem
+                          university={uni}
+                          index={index}
+                          onDragStart={handleDragStart}
+                          onDragEnter={handleDragEnter}
+                          onDragEnd={handleDragEnd}
+                          isDragging={draggedId === uni.id}
+                          isSubmitted={isSubmitted}
+                          correctRank={correctRank}
+                          rankingBy={rankingBy}
+                          correctValue={uni[rankingBy]}
+                        />
+                      </div>
+                    </div>
+                );
+              })}
             </div>
           </div>
         </main>
       </div>
 
       {showPopup && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-8 text-center shadow-2xl w-11/12 max-w-md animate-fadeIn">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-6 text-center shadow-2xl w-full max-w-lg animate-fadeIn overflow-y-auto max-h-[90vh]">
             {alreadyPlayed || isSubmitted ? (
               <>
-                <h2 className="text-3xl font-bold text-indigo-700 mb-3">
+                <h2 className="text-2xl font-bold text-indigo-700 mb-3">
                   You’ve completed today’s challenge!
                 </h2>
                 <p className="text-gray-700 text-lg mb-2">
@@ -313,27 +329,31 @@ const RankingList: React.FC = () => {
               </>
             ) : (
               <>
-                <h2 className="text-3xl font-bold text-indigo-700 mb-3">
+                <h2 className="text-2xl font-bold text-indigo-700 mb-3">
                   You haven’t played today’s challenge yet!
                 </h2>
                 <p className="text-gray-600 mb-4">
-                  Come back once you’ve completed the ranking to see your daily stats.
+                   Come back once you’ve completed the ranking to see your daily stats.
                 </p>
               </>
             )}
 
-            {userAvg !== null && totalGames !== 1 && (
+            {userAvg !== null && totalGames > 0 && (
               <p className="text-gray-700 text-md mb-4">
-                Your all-time average score ({totalGames} games): <b>{userAvg}</b>
+                Your all-time average score ({totalGames} game{totalGames > 1 ? 's' : ''}): <b>{userAvg}</b>
               </p>
             )}
-            {userAvg !== null && totalGames === 1 && (
-              <p className="text-gray-700 text-md mb-4">
-                Your all-time average score ({totalGames} game): <b>{userAvg}</b>
-              </p>
+            
+            {/* --- CHARTS --- */}
+            {isSubmitted && dailyDistribution && (
+                <DailyScoreDistributionChart data={dailyDistribution.map(d => ({ name: d.score.toString(), count: d.count }))} userScore={previousScore ?? score} />
             )}
-
-            <div className="bg-indigo-50 border border-indigo-200 px-6 py-3 rounded-xl shadow-md mb-6">
+            {totalGames > 0 && userDistribution && (
+                <UserScoreDistributionChart data={userDistribution.map(d => ({ name: d.score.toString(), count: d.count }))} />
+            )}
+            {/* --- END CHARTS --- */}
+            
+            <div className="bg-indigo-50 border border-indigo-200 px-6 py-3 rounded-xl shadow-md mt-6 mb-4">
               <p className="text-gray-700 font-medium">Next challenge starts in:</p>
               <p className="text-2xl font-bold text-indigo-600 mt-1">{countdown}</p>
             </div>
