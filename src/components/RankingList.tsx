@@ -37,13 +37,13 @@ const RankingList: React.FC = () => {
   
   // State for chart data
   interface DistributionData {
-    score: number;
+    name: string;
     count: number;
   }
 
   const [dailyDistribution, setDailyDistribution] = useState<DistributionData[] | null>(null);
   interface UserDistributionData {
-    score: number;
+    name: string;
     count: number;
   }
   const [userDistribution, setUserDistribution] = useState<UserDistributionData[] | null>(null);
@@ -346,10 +346,11 @@ const RankingList: React.FC = () => {
             
             {/* --- CHARTS --- */}
             {isSubmitted && dailyDistribution && (
-                <DailyScoreDistributionChart data={dailyDistribution.map(d => ({ name: d.score.toString(), count: d.count }))} userScore={previousScore ?? score} />
+                <DailyScoreDistributionChart data={dailyDistribution} userScore={previousScore ?? score} />
+
             )}
             {totalGames > 0 && userDistribution && (
-                <UserScoreDistributionChart data={userDistribution.map(d => ({ name: d.score.toString(), count: d.count }))} />
+                <UserScoreDistributionChart data={userDistribution} />
             )}
             {/* --- END CHARTS --- */}
             
