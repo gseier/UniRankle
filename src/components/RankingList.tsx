@@ -337,7 +337,10 @@ const RankingList: React.FC = () => {
                 </p>
               </>
             )}
+            {isSubmitted && dailyDistribution && (
+                <DailyScoreDistributionChart data={dailyDistribution} userScore={previousScore ?? score} />
 
+            )}
             {userAvg !== null && totalGames > 0 && (
               <p className="text-gray-700 text-md mb-4">
                 Your all-time average score ({totalGames} game{totalGames > 1 ? 's' : ''}): <b>{userAvg}</b>
@@ -345,10 +348,6 @@ const RankingList: React.FC = () => {
             )}
             
             {/* --- CHARTS --- */}
-            {isSubmitted && dailyDistribution && (
-                <DailyScoreDistributionChart data={dailyDistribution} userScore={previousScore ?? score} />
-
-            )}
             {totalGames > 0 && userDistribution && (
                 <UserScoreDistributionChart data={userDistribution} />
             )}
