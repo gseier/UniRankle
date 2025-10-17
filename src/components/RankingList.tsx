@@ -338,8 +338,9 @@ const RankingList: React.FC = () => {
               </>
             )}
             {isSubmitted && dailyDistribution && (
+              <p>
                 <DailyScoreDistributionChart data={dailyDistribution} userScore={previousScore ?? score} />
-
+              </p>
             )}
             {userAvg !== null && totalGames > 0 && (
               <p className="text-gray-700 text-md mb-4">
@@ -349,7 +350,9 @@ const RankingList: React.FC = () => {
             
             {/* --- CHARTS --- */}
             {totalGames > 0 && userDistribution && (
+              <p>
                 <UserScoreDistributionChart data={userDistribution} />
+              </p>
             )}
             {/* --- END CHARTS --- */}
             
