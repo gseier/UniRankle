@@ -416,7 +416,7 @@ const RankingList: React.FC = () => {
 
             <button
               onClick={closePopup}
-              className="mt-2 px-6 py-3 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition cursor-pointer"
+              className="mt-4 px-6 py-3 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition cursor-pointer"
             >
               Close
             </button>
@@ -425,7 +425,7 @@ const RankingList: React.FC = () => {
         </div>
       )}
       {showCopyNotice && (
-  <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-indigo-600 text-white px-6 py-3 rounded-xl shadow-lg animate-fade-in-up z-[9999]">
+  <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-indigo-600 text-white px-6 py-3 rounded-xl shadow-lg animate-fade-in-up z-[9999] animate-fade-out-up">
     ✅ Result copied to clipboard!
   </div>
 )}
