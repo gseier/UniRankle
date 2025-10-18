@@ -422,7 +422,7 @@ const RankingList: React.FC = () => {
             {(alreadyPlayed || isSubmitted) && (
               <button
                 onClick={handleCopyResult}
-                className="flex items-center justify-center mt-4 px-6 py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition cursor-pointer w-full sm:w-auto"
+                className="flex items-center justify-center mt-4 gap-2 px-6 py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition cursor-pointer w-full sm:w-auto"
               >
               <MdContentCopy className="text-lg" />
               Copy My Result
