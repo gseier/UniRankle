@@ -42,6 +42,30 @@ const RankingList: React.FC = () => {
     }, 300); // matches animation duration
   };
 
+  const handleCopyResult = () => {
+    if (score === null && previousScore === null) return;
+
+    const finalScore = previousScore ?? score ?? 0;
+    const total = 5; // always 5 universities in daily challenge
+
+    // Build emoji pattern (you can adapt this to actual placement data later if needed)
+    const emojiRow = Array.from({ length: total }, (_, i) => {
+      if (!isSubmitted) return '⬜';
+      // Simplified example: mark first X correct and the rest wrong
+      return i < finalScore ? '🟩' : '🟥';
+    }).join('');
+
+    const today = new Date().toLocaleDateString('en-CA');
+    const text = `I got ${finalScore}/5 on today's UniRankle challenge!\n\n${emojiRow}\n\n${today}\nPlay here: https://www.unirankle.seier.me`;
+
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Copied your result to clipboard!');
+    }).catch(() => {
+      alert('Failed to copy result');
+    });
+  };
+
+
   const [userAvg, setUserAvg] = useState<number | null>(null);
   const [totalGames, setTotalGames] = useState<number>(0);
   
@@ -384,6 +408,14 @@ const RankingList: React.FC = () => {
               <p className="text-gray-700 font-medium">Next challenge starts in:</p>
               <p className="text-2xl font-bold text-indigo-600 mt-1">{countdown}</p>
             </div>
+            {(alreadyPlayed || isSubmitted) && (
+              <button
+                onClick={handleCopyResult}
+                className="mt-4 px-6 py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition cursor-pointer"
+              >
+              Copy My Result
+              </button>
+            )}
 
             <button
               onClick={closePopup}
