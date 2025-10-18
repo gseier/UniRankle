@@ -60,7 +60,7 @@ const RankingList: React.FC = () => {
       return '🟥'; // incorrect
     }).join('');
 
-    const text = `I got ${finalScore}/${total} on today's UniRankle challenge!\n\n${emojiRow}\n\n${today}\nPlay here: https://www.unirankle.seier.me`;
+    const text = `I got ${finalScore}/${total} on today's UniRankle challenge!\n\n${emojiRow}\n\n${today}\nPlay here: https://unirankle.seier.me/`;
 
     navigator.clipboard.writeText(text).then(() => {
       setShowCopyNotice(true);
@@ -422,7 +422,7 @@ const RankingList: React.FC = () => {
             {(alreadyPlayed || isSubmitted) && (
               <button
                 onClick={handleCopyResult}
-                className="mt-4 px-6 py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition cursor-pointer"
+                className="flex items-center justify-center gap-2 px-6 py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition cursor-pointer w-full sm:w-auto"
               >
               <MdContentCopy className="text-lg" />
               Copy My Result
