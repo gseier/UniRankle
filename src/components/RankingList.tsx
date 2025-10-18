@@ -32,6 +32,16 @@ const RankingList: React.FC = () => {
   const [avgScore, setAvgScore] = useState<number | null>(null);
   const [countdown, setCountdown] = useState<string>('');
   const [showPopup, setShowPopup] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+
+  const closePopup = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setShowPopup(false);
+      setIsClosing(false);
+    }, 300); // matches animation duration
+  };
+
   const [userAvg, setUserAvg] = useState<number | null>(null);
   const [totalGames, setTotalGames] = useState<number>(0);
   
@@ -169,6 +179,12 @@ const RankingList: React.FC = () => {
           setAvgScore(avgData.average);
           setDailyDistribution(avgData.distribution); // Get daily distribution on submit
           setPreviousScore(data.previousScore ?? finalScore);
+
+          const userRes = await fetch('/api/userStats');
+          const userData = await userRes.json();
+          setUserAvg(userData.avgScore);
+          setTotalGames(userData.totalGames);
+          setUserDistribution(userData.distribution);
         }
       })
       .catch(err => console.error('Failed to save score', err));
@@ -313,8 +329,16 @@ const RankingList: React.FC = () => {
       </div>
 
       {showPopup && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl p-6 text-center shadow-2xl w-full max-w-lg animate-fadeIn overflow-y-auto max-h-[90vh]">
+        <div
+          className={`fixed inset-0 flex items-center justify-center z-50 p-4 
+            backdrop-blur-sm bg-black/40 transition-all duration-300 
+            ${isClosing ? 'animate-fade-out' : 'animate-fade-in'}`}
+        >
+          <div
+            className={`bg-white rounded-2xl p-6 text-center shadow-2xl w-full max-w-lg 
+              overflow-y-auto max-h-[90vh] transition-all duration-300
+              ${isClosing ? 'animate-fade-out-up' : 'animate-fade-in-up'}`}
+          >
             {alreadyPlayed || isSubmitted ? (
               <>
                 <h2 className="text-2xl font-bold text-indigo-700 mb-3">
@@ -338,9 +362,9 @@ const RankingList: React.FC = () => {
               </>
             )}
             {isSubmitted && dailyDistribution && (
-              <p>
+              <div className="mb-4">
                 <DailyScoreDistributionChart data={dailyDistribution} userScore={previousScore ?? score} />
-              </p>
+              </div>
             )}
             {userAvg !== null && totalGames > 0 && (
               <p className="text-gray-700 text-md mb-4">
@@ -362,7 +386,7 @@ const RankingList: React.FC = () => {
             </div>
 
             <button
-              onClick={() => setShowPopup(false)}
+              onClick={closePopup}
               className="mt-2 px-6 py-3 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition cursor-pointer"
             >
               Close
