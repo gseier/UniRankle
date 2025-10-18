@@ -33,6 +33,7 @@ const RankingList: React.FC = () => {
   const [countdown, setCountdown] = useState<string>('');
   const [showPopup, setShowPopup] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [isCopyFadingOut, setIsCopyFadingOut] = useState(false);
 
   const closePopup = () => {
     setIsClosing(true);
@@ -56,9 +57,14 @@ const RankingList: React.FC = () => {
 
     navigator.clipboard.writeText(text).then(() => {
       setShowCopyNotice(true);
-      setTimeout(() => setShowCopyNotice(false), 2000); // disappears after 2s
+      setTimeout(() => setIsCopyFadingOut(true), 1500); // start fade-out after 1.5s
+      setTimeout(() => {
+        setShowCopyNotice(false);
+        setIsCopyFadingOut(false);
+      }, 2000); // total of 2s visible
     });
   };
+
 
 
 
@@ -425,10 +431,16 @@ const RankingList: React.FC = () => {
         </div>
       )}
       {showCopyNotice && (
-  <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-indigo-600 text-white px-6 py-3 rounded-xl shadow-lg animate-fade-in-up z-[9999] animate-fade-out-up">
+  <div
+    className={`fixed bottom-6 left-1/2 transform -translate-x-1/2 
+      bg-indigo-600 text-white px-6 py-3 rounded-xl shadow-lg z-[9999]
+      transition-opacity duration-500
+      ${isCopyFadingOut ? 'animate-fade-out' : 'animate-fade-in-up'}`}
+  >
     ✅ Result copied to clipboard!
   </div>
 )}
+
 
     </div>
   );
