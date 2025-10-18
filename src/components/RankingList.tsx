@@ -26,7 +26,7 @@ const RankingList: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [draggedId, setDraggedId] = useState<string | null>(null);
   const [score, setScore] = useState<number | null>(null);
-
+  const [showCopyNotice, setShowCopyNotice] = useState(false);
   const [alreadyPlayed, setAlreadyPlayed] = useState(false);
   const [previousScore, setPreviousScore] = useState<number | null>(null);
   const [avgScore, setAvgScore] = useState<number | null>(null);
@@ -46,24 +46,20 @@ const RankingList: React.FC = () => {
     if (score === null && previousScore === null) return;
 
     const finalScore = previousScore ?? score ?? 0;
-    const total = 5; // always 5 universities in daily challenge
-
-    // Build emoji pattern (you can adapt this to actual placement data later if needed)
-    const emojiRow = Array.from({ length: total }, (_, i) => {
-      if (!isSubmitted) return '⬜';
-      // Simplified example: mark first X correct and the rest wrong
-      return i < finalScore ? '🟩' : '🟥';
-    }).join('');
+    const total = 5;
+    const emojiRow = Array.from({ length: total }, (_, i) =>
+      i < finalScore ? '🟩' : '🟥'
+    ).join('');
 
     const today = new Date().toLocaleDateString('en-CA');
     const text = `I got ${finalScore}/5 on today's UniRankle challenge!\n\n${emojiRow}\n\n${today}\nPlay here: https://www.unirankle.seier.me`;
 
     navigator.clipboard.writeText(text).then(() => {
-      alert('Copied your result to clipboard!');
-    }).catch(() => {
-      alert('Failed to copy result');
+      setShowCopyNotice(true);
+      setTimeout(() => setShowCopyNotice(false), 2000); // disappears after 2s
     });
   };
+
 
 
   const [userAvg, setUserAvg] = useState<number | null>(null);
@@ -408,6 +404,7 @@ const RankingList: React.FC = () => {
               <p className="text-gray-700 font-medium">Next challenge starts in:</p>
               <p className="text-2xl font-bold text-indigo-600 mt-1">{countdown}</p>
             </div>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-4">
             {(alreadyPlayed || isSubmitted) && (
               <button
                 onClick={handleCopyResult}
@@ -423,9 +420,16 @@ const RankingList: React.FC = () => {
             >
               Close
             </button>
+            </div>
           </div>
         </div>
       )}
+      {showCopyNotice && (
+  <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-indigo-600 text-white px-6 py-3 rounded-xl shadow-lg animate-fade-in-up z-[9999]">
+    ✅ Result copied to clipboard!
+  </div>
+)}
+
     </div>
   );
 };
