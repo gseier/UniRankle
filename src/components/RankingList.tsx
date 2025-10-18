@@ -5,7 +5,7 @@ import Scoreboard from './Scoreboard';
 import { useDailyChallenge } from '../hooks/useDailyChallenge';
 import { arrayMove, calculateScore, calculateMaxScore } from '../utils/dndUtils';
 import type { University } from '../types/University';
-import { MdOutlineLocalLibrary, MdInsights, MdOutlineFormatListNumberedRtl, MdPeopleOutline, MdOutlineMap, MdOutlineImportContacts } from 'react-icons/md';
+import { MdContentCopy, MdOutlineLocalLibrary, MdInsights, MdOutlineFormatListNumberedRtl, MdPeopleOutline, MdOutlineMap, MdOutlineImportContacts } from 'react-icons/md';
 import unirankleImage from '/images/unirankle.png';
 import DailyScoreDistributionChart from './DailyScoreDistributionChart'; // Import chart
 import UserScoreDistributionChart from './UserScoreDistributionChart'; // Import chart
@@ -47,23 +47,31 @@ const RankingList: React.FC = () => {
     if (score === null && previousScore === null) return;
 
     const finalScore = previousScore ?? score ?? 0;
-    const total = 5;
-    const emojiRow = Array.from({ length: total }, (_, i) =>
-      i < finalScore ? '🟩' : '🟥'
-    ).join('');
-
+    const total = universities.length;
     const today = new Date().toLocaleDateString('en-CA');
-    const text = `I got ${finalScore}/5 on today's UniRankle challenge!\n\n${emojiRow}\n\n${today}\nPlay here: https://unirankle.seier.me/`;
+
+  // Build emoji feedback row
+    const emojiRow = universities.map((u, index) => {
+      const correctIndex = correctOrder.findIndex(c => c.id === u.id);
+      const diff = Math.abs(correctIndex - index);
+
+      if (diff === 0) return '🟩'; // perfect position
+      if (diff === 1) return '🟨'; // one off
+      return '🟥'; // incorrect
+    }).join('');
+
+    const text = `I got ${finalScore}/${total} on today's UniRankle challenge!\n\n${emojiRow}\n\n${today}\nPlay here: https://www.unirankle.seier.me`;
 
     navigator.clipboard.writeText(text).then(() => {
       setShowCopyNotice(true);
-      setTimeout(() => setIsCopyFadingOut(true), 1500); // start fade-out after 1.5s
+      setTimeout(() => setIsCopyFadingOut(true), 1500);
       setTimeout(() => {
         setShowCopyNotice(false);
         setIsCopyFadingOut(false);
-      }, 2000); // total of 2s visible
+      }, 2000);
     });
   };
+
 
 
 
@@ -416,6 +424,7 @@ const RankingList: React.FC = () => {
                 onClick={handleCopyResult}
                 className="mt-4 px-6 py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition cursor-pointer"
               >
+              <MdContentCopy className="text-lg" />
               Copy My Result
               </button>
             )}
