@@ -182,3 +182,9 @@
   from { backdrop-filter: blur(0px); }
   to { backdrop-filter: blur(4px); }
 }
+
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}

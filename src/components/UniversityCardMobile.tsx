@@ -59,11 +59,13 @@ const UniversityCardMobile: React.FC<UniversityCardProps> = ({
         <img
           src={university.imageUrl}
           alt={university.name}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover select-none pointer-events-none touch-none"
+          onContextMenu={(e) => e.preventDefault()}
+          draggable={false}
           onError={(e) => {
             const t = e.target as HTMLImageElement;
             t.src = fallbackImageUrl;
-            t.className = 'w-full h-full object-contain p-4 bg-gray-200';
+            t.className = 'w-full h-full object-contain p-4 bg-gray-200 select-none pointer-events-none';
           }}
         />
 

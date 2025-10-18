@@ -53,7 +53,7 @@ const RankingList: React.FC = () => {
     ).join('');
 
     const today = new Date().toLocaleDateString('en-CA');
-    const text = `I got ${finalScore}/5 on today's UniRankle challenge!\n\n${emojiRow}\n\n${today}\nPlay here: https://www.unirankle.seier.me`;
+    const text = `I got ${finalScore}/5 on today's UniRankle challenge!\n\n${emojiRow}\n\n${today}\nPlay here: https://unirankle.seier.me/`;
 
     navigator.clipboard.writeText(text).then(() => {
       setShowCopyNotice(true);
