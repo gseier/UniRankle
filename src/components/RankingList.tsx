@@ -164,22 +164,12 @@ const RankingList: React.FC = () => {
 
   // --- D&D logic ---
   const handleDragStart = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-  const id = e.currentTarget.getAttribute('data-id');
-  if (id) {
-    // Store which card is being dragged
-    e.dataTransfer.setData('text/plain', id);
-
-    // Remove default ghost image
-    const img = new Image();
-    img.src =
-      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgYAAAAAMAASsJTYQAAAAASUVORK5CYII=';
-    e.dataTransfer.setDragImage(img, 0, 0);
-
-    // Slight delay so the UI updates after drag start
-    setTimeout(() => setDraggedId(id), 0);
-  }
-}, []);
-
+    const id = e.currentTarget.getAttribute('data-id');
+    if (id) {
+      e.dataTransfer.setData('text/plain', id);
+      setTimeout(() => setDraggedId(id), 0);
+    }
+  }, []);
   
   const handleDragEnter = useCallback(
     (e: React.DragEvent<HTMLDivElement>) => {

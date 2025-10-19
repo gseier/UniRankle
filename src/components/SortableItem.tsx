@@ -52,59 +52,48 @@ const SortableItem: React.FC<SortableItemProps> = ({
   const dragStyle = isDragging ? 'opacity-80 scale-[0.99] border-dashed border-indigo-500' : 'border-solid border-gray-100';
 
   return (
+    <div
+  data-id={university.id}
+  data-index={index}
+  onDragStart={onDragStart}
+  onDragEnter={onDragEnter}
+  onDragEnd={onDragEnd}
+  onDragOver={(e) => e.preventDefault()}
+  className={`
+    flex flex-wrap sm:flex-nowrap items-stretch gap-3
+    transition-all duration-300 transform bg-gray-50
+    rounded-2xl shadow-md border-2 border-transparent
+    ${isSubmitted ? 'cursor-default' : 'hover:shadow-lg'}
+  `}
+>
+  {/* Rank Indicator */}
   <div
-    data-id={university.id}
-    data-index={index}
-    onDragStart={onDragStart}
-    onDragEnter={onDragEnter}
-    onDragEnd={onDragEnd}
-    onDragOver={(e) => e.preventDefault()}
-    className={`flex flex-wrap sm:flex-nowrap items-stretch gap-3 
-                transition-all duration-300 transform bg-gray-50 
-                rounded-2xl shadow-md border-2 border-transparent 
-                ${isSubmitted ? 'cursor-default' : 'hover:shadow-lg'}`}
+    className={`
+      flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 flex flex-col items-center justify-center
+      rounded-l-2xl font-bold text-center shadow-md ml-3 my-3 py-2 ${rankBg}
+    `}
+    title={indicatorTooltip}
   >
-    {/* Rank Indicator */}
-    <div
-      className={`
-        flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 flex flex-col items-center justify-center
-        rounded-l-2xl font-bold text-center shadow-md ml-3 my-3 py-2 ${rankBg}
-      `}
-      title={indicatorTooltip}
-    >
-      <span className="text-xs sm:text-sm">{isSubmitted ? 'Pos.' : 'Rank'}</span>
-      <span className="text-lg sm:text-xl pt-1">{rankText}</span>
-    </div>
-
-    {/* Draggable Card */}
-    <div
-      draggable={!isSubmitted}
-      className={`flex-grow ${isSubmitted ? 'cursor-default' : 'cursor-grab'} ${dragStyle}`}
-    >
-      {!isDragging ? (
-        <UniversityCard
-          university={university}
-          isDragging={isDragging}
-          isSubmitted={isSubmitted}
-          rankingBy={rankingBy}
-          correctValue={university[rankingBy]}
-        />
-      ) : (
-        <div className="invisible h-full">
-          {/* invisible placeholder to preserve layout height */}
-          <UniversityCard
-            university={university}
-            isDragging={false}
-            isSubmitted={isSubmitted}
-            rankingBy={rankingBy}
-            correctValue={university[rankingBy]}
-          />
-        </div>
-      )}
-    </div>
+    <span className="text-xs sm:text-sm">{isSubmitted ? 'Pos.' : 'Rank'}</span>
+    <span className="text-lg sm:text-xl pt-1">{rankText}</span>
   </div>
-);
 
+  {/* Draggable Card */}
+  <div
+    draggable={!isSubmitted}
+    className={`flex-grow ${isSubmitted ? 'cursor-default' : 'cursor-grab'} ${dragStyle}`}
+  >
+    <UniversityCard
+      university={university}
+      isDragging={isDragging}
+      isSubmitted={isSubmitted}
+      rankingBy={rankingBy}
+      correctValue={university[rankingBy]}
+    />
+  </div>
+</div>
+
+  );
 };
 
 export default SortableItem;
