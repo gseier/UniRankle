@@ -52,7 +52,7 @@ const UniversityCard: React.FC<UniversityCardProps> = ({
     flex flex-col bg-white border-2 border-transparent
     rounded-2xl transition-all duration-300 w-full max-w-full
     shadow-lg overflow-hidden
-    ${isDragging ? 'opacity-80 scale-[0.98] border-indigo-500' : 'hover:shadow-xl'}
+    ${isDragging ? 'dragging' : 'hover:shadow-xl'}
   `}
   aria-label={`University Card for ${university.name}`}
 >
