@@ -1,8 +1,9 @@
 import React from 'react';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "./ui/chart";
+import { ChartContainer, ChartTooltip } from "./ui/chart";
 import type { ChartConfig } from "./ui/chart";
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import SimpleTooltip from "./ui/SimpleToolTip";
 
 interface ChartProps {
   data: { name: string; count: number }[];
@@ -39,10 +40,7 @@ const UserScoreDistributionChart: React.FC<ChartProps> = ({ data }) => {
                 allowDecimals={false}
                 label={{ value: 'Games', angle: -90, position: 'insideLeft', offset: 10 }}
               />
-              <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent className="-ml-5" />}
-              />
+              <ChartTooltip cursor={false} content={<SimpleTooltip typeLabel="Games" />} />
               <Bar dataKey="count" fill="var(--color-count)" radius={4} />
             </BarChart>
         </ChartContainer>
