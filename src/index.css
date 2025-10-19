@@ -195,3 +195,7 @@ img {
   transition: transform 0.15s ease, box-shadow 0.15s ease;
   opacity: 1;
 }
+
+.drag-overlay {
+  transition: top 0.05s ease-out, left 0.05s ease-out;
+}
