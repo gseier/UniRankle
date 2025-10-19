@@ -10,7 +10,6 @@ interface SortableItemProps {
   onDragEnter: (e: React.DragEvent<HTMLDivElement>) => void;
   onDragEnd: (e: React.DragEvent<HTMLDivElement>) => void;
   isDragging: boolean;
-  onDrag: (e: React.DragEvent<HTMLDivElement>) => void;
   isSubmitted: boolean;
   correctRank?: number;
   rankingBy: RankVariable;
@@ -24,7 +23,6 @@ const SortableItem: React.FC<SortableItemProps> = ({
   onDragEnter,
   onDragEnd,
   isDragging,
-  onDrag,
   isSubmitted,
   correctRank,
   rankingBy,
@@ -60,7 +58,6 @@ const SortableItem: React.FC<SortableItemProps> = ({
     onDragStart={onDragStart}
     onDragEnter={onDragEnter}
     onDragEnd={onDragEnd}
-    onDrag={onDrag}
     onDragOver={(e) => e.preventDefault()}
     className={`flex flex-wrap sm:flex-nowrap items-stretch gap-3 
                 transition-all duration-300 transform bg-gray-50 

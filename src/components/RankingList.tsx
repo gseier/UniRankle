@@ -9,7 +9,6 @@ import { MdContentCopy, MdOutlineLocalLibrary, MdInsights, MdOutlineFormatListNu
 import unirankleImage from '/images/unirankle.png';
 import DailyScoreDistributionChart from './DailyScoreDistributionChart'; // Import chart
 import UserScoreDistributionChart from './UserScoreDistributionChart'; // Import chart
-import UniversityCard from './UniversityCard'; // Import UniversityCard
 
 const formatRankingVariable = (key: keyof University | 'studentCount') => {
   switch (key) {
@@ -79,9 +78,6 @@ const RankingList: React.FC = () => {
 
   const [userAvg, setUserAvg] = useState<number | null>(null);
   const [totalGames, setTotalGames] = useState<number>(0);
-  const [dragPosition, setDragPosition] = useState<{ x: number; y: number } | null>(null);
-  const [draggedUniversity, setDraggedUniversity] = useState<University | null>(null);
-
   
   // State for chart data
   interface DistributionData {
@@ -170,24 +166,19 @@ const RankingList: React.FC = () => {
   const handleDragStart = useCallback((e: React.DragEvent<HTMLDivElement>) => {
   const id = e.currentTarget.getAttribute('data-id');
   if (id) {
+    // Store which card is being dragged
     e.dataTransfer.setData('text/plain', id);
 
-    // Remove default browser ghost
+    // Remove default ghost image
     const img = new Image();
     img.src =
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgYAAAAAMAASsJTYQAAAAASUVORK5CYII=';
     e.dataTransfer.setDragImage(img, 0, 0);
 
-    const university = universities.find((u) => u.id === id);
-    if (university) {
-      setDraggedUniversity(university);
-      setDragPosition({ x: e.clientX, y: e.clientY });
-    }
-
+    // Slight delay so the UI updates after drag start
     setTimeout(() => setDraggedId(id), 0);
   }
-}, [universities]);
-
+}, []);
 
   
   const handleDragEnter = useCallback(
@@ -205,19 +196,7 @@ const RankingList: React.FC = () => {
     [universities, draggedId, isSubmitted]
   );
   
-  const handleDragEnd = useCallback(() => {
-  setDraggedId(null);
-  setDraggedUniversity(null);
-  setDragPosition(null);
-}, []);
-
-
-  const handleDrag = useCallback((e: React.DragEvent<HTMLDivElement>) => {
-  if (draggedUniversity) {
-    setDragPosition({ x: e.clientX, y: e.clientY });
-  }
-}, [draggedUniversity]);
-
+  const handleDragEnd = useCallback(() => setDraggedId(null), []);
 
   // --- Submit handler ---
   const handleSubmit = useCallback(() => {
@@ -378,7 +357,6 @@ const RankingList: React.FC = () => {
                           onDragStart={handleDragStart}
                           onDragEnter={handleDragEnter}
                           onDragEnd={handleDragEnd}
-                          onDrag={handleDrag}
                           isDragging={draggedId === uni.id}
                           isSubmitted={isSubmitted}
                           correctRank={correctRank}
@@ -481,25 +459,6 @@ const RankingList: React.FC = () => {
     ✅ Result copied to clipboard!
   </div>
 )}
-{draggedUniversity && dragPosition && (
-  <div
-    className="drag-overlay fixed pointer-events-none z-[9999] transition-transform duration-75 ease-out"
-    style={{
-      top: dragPosition.y + 10,
-      left: dragPosition.x + 10,
-      transform: 'translate(-50%, -50%)',
-    }}
-  >
-    <UniversityCard
-      university={draggedUniversity}
-      isDragging={true}
-      isSubmitted={isSubmitted}
-      rankingBy={rankingBy}
-      correctValue={draggedUniversity[rankingBy]}
-    />
-  </div>
-)}
-
 
 
     </div>
